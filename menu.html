@@ -1,0 +1,541 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Composant — Menu</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@600;700;800&family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="cursor.css">
+<style>
+  :root {
+    --bg: #0a0a0a;
+    --panel-left: #0a0a0a;
+    --panel-right: #1a1a1a;
+    --text: #ffffff;
+    --text-muted: #8a8a8a;
+    --border: rgba(255, 255, 255, 0.1);
+    --accent: #FF3B30;
+    --font-display: 'Syne', sans-serif;
+    --font-body: 'DM Sans', sans-serif;
+    --ease: cubic-bezier(0.76, 0, 0.24, 1);
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: var(--font-body);
+    min-height: 100vh;
+    overflow-x: hidden;
+  }
+
+  a { color: inherit; text-decoration: none; }
+  button { font: inherit; color: inherit; background: none; border: none; cursor: pointer; }
+  :focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; }
+
+  /* Demo bar */
+  .demo-bar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 40px;
+    height: 84px;
+    border-bottom: 1px solid var(--border);
+    position: relative;
+    z-index: 5;
+  }
+
+  .demo-logo {
+    font-family: var(--font-display);
+    font-weight: 700;
+    font-size: 1.25rem;
+    letter-spacing: -0.02em;
+  }
+
+  .demo-logo span { color: var(--accent); }
+
+  .demo-hint {
+    padding: 48px 40px;
+    font-size: 0.9rem;
+    color: var(--text-muted);
+    max-width: 480px;
+    line-height: 1.6;
+  }
+
+  .nav-toggle {
+    display: inline-flex;
+    align-items: center;
+    gap: 12px;
+    padding: 0;
+    border: none;
+    background: none;
+    z-index: 200;
+    position: relative;
+  }
+
+  .nav-toggle-label {
+    font-family: var(--font-display);
+    font-weight: 700;
+    font-size: 1.05rem;
+    letter-spacing: -0.02em;
+    color: var(--text);
+  }
+
+  .nav-toggle-icon {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 6px;
+    width: 28px;
+  }
+
+  .nav-toggle-icon span {
+    display: block;
+    width: 100%;
+    height: 2px;
+    background: var(--text);
+    transition: transform 0.4s var(--ease), opacity 0.3s var(--ease);
+  }
+
+  .nav-toggle.is-open .nav-toggle-icon span:nth-child(1) {
+    transform: translateY(4px) rotate(45deg);
+  }
+
+  .nav-toggle.is-open .nav-toggle-icon span:nth-child(2) {
+    transform: translateY(-4px) rotate(-45deg);
+  }
+
+  /* ============ FULLSCREEN MENU ============ */
+  .menu-overlay {
+    position: fixed;
+    inset: 0;
+    z-index: 100;
+    display: flex;
+    pointer-events: none;
+    visibility: hidden;
+  }
+
+  .menu-overlay.is-open {
+    pointer-events: auto;
+    visibility: visible;
+  }
+
+  .menu-panel {
+    position: relative;
+    height: 100%;
+    overflow: hidden;
+    will-change: transform;
+  }
+
+  .menu-panel-left {
+    flex: 1.15;
+    background: var(--panel-left);
+    transform: translateY(-101%);
+  }
+
+  .menu-panel-right {
+    flex: 0.85;
+    background: var(--panel-right);
+    transform: translateY(101%);
+  }
+
+  .menu-panel-inner {
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    padding: 40px 56px 48px;
+  }
+
+  /* Left header */
+  .menu-logo {
+    font-family: var(--font-display);
+    font-weight: 700;
+    font-size: 1.35rem;
+    letter-spacing: -0.03em;
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: auto;
+    opacity: 0;
+  }
+
+  .menu-logo-mark {
+    width: 28px;
+    height: 28px;
+    border-radius: 6px;
+    background: var(--text);
+    color: var(--panel-left);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.85rem;
+    font-weight: 800;
+  }
+
+  /* Nav links */
+  .menu-nav {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    margin: 40px 0 auto;
+  }
+
+  .menu-link {
+    display: flex;
+    align-items: center;
+    gap: 18px;
+    padding: 10px 0;
+    opacity: 0;
+    transform: translateY(28px);
+  }
+
+  .menu-link-index {
+    font-size: 0.8rem;
+    font-weight: 500;
+    color: var(--text-muted);
+    min-width: 28px;
+  }
+
+  .menu-link-label {
+    font-family: var(--font-display);
+    font-weight: 700;
+    font-size: clamp(2rem, 4.5vw, 3.4rem);
+    letter-spacing: -0.03em;
+    line-height: 1.05;
+    color: var(--text);
+    transition: color 0.3s var(--ease);
+  }
+
+  .menu-link-plus {
+    margin-left: auto;
+    width: 28px;
+    height: 28px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.25rem;
+    font-weight: 400;
+    color: var(--text);
+    transition: transform 0.35s var(--ease), color 0.3s var(--ease);
+  }
+
+  .menu-link:hover .menu-link-label { color: var(--accent); }
+  .menu-link:hover .menu-link-plus {
+    transform: rotate(45deg);
+    color: var(--accent);
+  }
+
+  /* Right panel */
+  .menu-close {
+    align-self: flex-end;
+    width: 48px;
+    height: 48px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    opacity: 0;
+    transition: transform 0.3s var(--ease);
+  }
+
+  .menu-close:hover { transform: rotate(90deg); }
+
+  .menu-close svg {
+    width: 22px;
+    height: 22px;
+    stroke: var(--text);
+    stroke-width: 1.5;
+    fill: none;
+  }
+
+  .menu-contact {
+    margin-top: auto;
+    margin-bottom: auto;
+    max-width: 320px;
+  }
+
+  .menu-contact-title {
+    font-family: var(--font-display);
+    font-weight: 700;
+    font-size: clamp(1.6rem, 2.5vw, 2.1rem);
+    letter-spacing: -0.03em;
+    margin-bottom: 36px;
+    opacity: 0;
+    transform: translateY(24px);
+  }
+
+  .menu-contact-block {
+    margin-bottom: 26px;
+    opacity: 0;
+    transform: translateY(20px);
+  }
+
+  .menu-contact-label {
+    display: block;
+    font-size: 0.85rem;
+    color: var(--text-muted);
+    margin-bottom: 6px;
+  }
+
+  .menu-contact-value {
+    font-size: 1.05rem;
+    font-weight: 500;
+    color: var(--text);
+    line-height: 1.45;
+    transition: color 0.25s var(--ease);
+  }
+
+  a.menu-contact-value:hover { color: var(--accent); }
+
+  .menu-socials {
+    display: flex;
+    gap: 10px;
+    margin-top: 4px;
+  }
+
+  .menu-social {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    border: 1px solid var(--border);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: background 0.3s var(--ease), border-color 0.3s var(--ease), transform 0.3s var(--ease);
+  }
+
+  .menu-social svg {
+    width: 15px;
+    height: 15px;
+    fill: currentColor;
+  }
+
+  .menu-social:hover {
+    background: var(--accent);
+    border-color: var(--accent);
+    transform: translateY(-2px);
+  }
+
+  @media (max-width: 900px) {
+    .demo-bar { padding: 0 20px; }
+    .demo-hint { padding: 32px 20px; }
+
+    .menu-overlay {
+      flex-direction: column;
+    }
+
+    .menu-panel-left,
+    .menu-panel-right {
+      flex: none;
+      width: 100%;
+    }
+
+    .menu-panel-left { height: 58%; }
+    .menu-panel-right { height: 42%; }
+
+    .menu-panel-inner {
+      padding: 28px 24px 32px;
+    }
+
+    .menu-nav {
+      margin: 20px 0 12px;
+      gap: 2px;
+      overflow-y: auto;
+    }
+
+    .menu-link { padding: 6px 0; }
+    .menu-link-label { font-size: clamp(1.5rem, 7vw, 2rem); }
+    .menu-contact { margin-top: 12px; margin-bottom: 0; }
+    .menu-contact-title { margin-bottom: 20px; font-size: 1.4rem; }
+    .menu-contact-block { margin-bottom: 14px; }
+  }
+</style>
+</head>
+<body>
+
+<div class="demo-bar">
+  <a href="#" class="demo-logo">M<span>B</span></a>
+  <button class="nav-toggle" id="navToggle" aria-label="Ouvrir le menu" aria-expanded="false">
+    <span class="nav-toggle-label">Menu</span>
+    <span class="nav-toggle-icon" aria-hidden="true">
+      <span></span>
+      <span></span>
+    </span>
+  </button>
+</div>
+
+<p class="demo-hint">// Cliquez sur le menu. Le panneau gauche descend du haut, le panneau droit monte du bas.</p>
+
+<div class="menu-overlay" id="menuOverlay" aria-hidden="true">
+  <div class="menu-panel menu-panel-left" id="panelLeft">
+    <div class="menu-panel-inner">
+      <a href="#" class="menu-logo">
+        <span class="menu-logo-mark">M</span>
+        Bouzayan
+      </a>
+
+      <nav class="menu-nav" aria-label="Navigation principale">
+        <a href="#accueil" class="menu-link">
+          <span class="menu-link-index">01</span>
+          <span class="menu-link-label">Accueil</span>
+          <span class="menu-link-plus" aria-hidden="true">+</span>
+        </a>
+        <a href="#apropos" class="menu-link">
+          <span class="menu-link-index">02</span>
+          <span class="menu-link-label">À propos</span>
+          <span class="menu-link-plus" aria-hidden="true">+</span>
+        </a>
+        <a href="#projets" class="menu-link">
+          <span class="menu-link-index">03</span>
+          <span class="menu-link-label">Projets</span>
+          <span class="menu-link-plus" aria-hidden="true">+</span>
+        </a>
+        <a href="#competences" class="menu-link">
+          <span class="menu-link-index">04</span>
+          <span class="menu-link-label">Compétences</span>
+          <span class="menu-link-plus" aria-hidden="true">+</span>
+        </a>
+        <a href="#services" class="menu-link">
+          <span class="menu-link-index">05</span>
+          <span class="menu-link-label">Services</span>
+          <span class="menu-link-plus" aria-hidden="true">+</span>
+        </a>
+        <a href="#contact" class="menu-link">
+          <span class="menu-link-index">06</span>
+          <span class="menu-link-label">Contact</span>
+          <span class="menu-link-plus" aria-hidden="true">+</span>
+        </a>
+      </nav>
+    </div>
+  </div>
+
+  <div class="menu-panel menu-panel-right" id="panelRight">
+    <div class="menu-panel-inner">
+      <button class="menu-close" id="menuClose" aria-label="Fermer le menu">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"/></svg>
+      </button>
+
+      <div class="menu-contact">
+        <h2 class="menu-contact-title">Get In Touch</h2>
+
+        <div class="menu-contact-block">
+          <span class="menu-contact-label">Phone</span>
+          <a href="tel:+212690815605" class="menu-contact-value">+212 690 815 605</a>
+        </div>
+
+        <div class="menu-contact-block">
+          <span class="menu-contact-label">Email</span>
+          <a href="mailto:mohammedbouzi177@gmail.com" class="menu-contact-value">mohammedbouzi177@gmail.com</a>
+        </div>
+
+        <div class="menu-contact-block">
+          <span class="menu-contact-label">Address</span>
+          <p class="menu-contact-value">Beni Mellal, Maroc</p>
+        </div>
+
+        <div class="menu-contact-block">
+          <span class="menu-contact-label">Follow us</span>
+          <div class="menu-socials">
+            <a href="https://github.com/" class="menu-social" aria-label="GitHub" target="_blank" rel="noopener">
+              <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2C6.5 2 2 6.5 2 12c0 4.4 2.9 8.2 6.8 9.5.5.1.7-.2.7-.5v-1.7c-2.8.6-3.4-1.3-3.4-1.3-.4-1.1-1.1-1.4-1.1-1.4-.9-.6.1-.6.1-.6 1 .1 1.5 1 1.5 1 .9 1.5 2.3 1.1 2.9.8.1-.6.3-1.1.6-1.3-2.2-.3-4.6-1.1-4.6-5 0-1.1.4-2 1-2.7-.1-.3-.4-1.3.1-2.7 0 0 .8-.3 2.8 1 .8-.2 1.6-.3 2.4-.3s1.6.1 2.4.3c2-.1 2.8-1 2.8-1 .5 1.4.2 2.4.1 2.7.6.7 1 1.6 1 2.7 0 3.9-2.3 4.7-4.6 5 .4.3.7.9.7 1.8v2.7c0 .3.2.6.7.5C19.1 20.2 22 16.4 22 12c0-5.5-4.5-10-10-10z"/></svg>
+            </a>
+            <a href="https://x.com/" class="menu-social" aria-label="X / Twitter" target="_blank" rel="noopener">
+              <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M18.2 4H21l-6.6 7.5L22 20h-5.8l-4.5-5.4L6.4 20H3.6l7-8L2 4h6l4.1 5L18.2 4zm-1 14.6h1.6L7 5.3H5.3l11.9 13.3z"/></svg>
+            </a>
+            <a href="https://linkedin.com/" class="menu-social" aria-label="LinkedIn" target="_blank" rel="noopener">
+              <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6.5 9H3v12h3.5V9zM4.8 3C3.5 3 2.5 4 2.5 5.3c0 1.2 1 2.2 2.3 2.2h.1c1.3 0 2.3-1 2.3-2.2C7.1 4 6.1 3 4.8 3zM21 14.5c0-2.8-1.5-4.6-3.6-4.6-1.7 0-2.4.9-2.8 1.6V9H11v12h3.5v-6.5c0-.9.6-1.8 1.6-1.8 1 0 1.5.7 1.5 1.8V21H21v-6.5z"/></svg>
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+<script>
+  const navToggle = document.getElementById('navToggle');
+  const menuClose = document.getElementById('menuClose');
+  const overlay = document.getElementById('menuOverlay');
+  const panelLeft = document.getElementById('panelLeft');
+  const panelRight = document.getElementById('panelRight');
+
+  let menuOpen = false;
+
+  const openTl = gsap.timeline({
+    paused: true,
+    defaults: { ease: 'power4.inOut' },
+    onReverseComplete() {
+      overlay.classList.remove('is-open');
+      overlay.setAttribute('aria-hidden', 'true');
+      document.body.style.overflow = '';
+    },
+  });
+
+  openTl
+    .set(overlay, { visibility: 'visible' })
+    /* Gauche : du haut vers le bas */
+    .to(panelLeft, { y: '0%', duration: 0.85 }, 0)
+    /* Droite : du bas vers le haut */
+    .to(panelRight, { y: '0%', duration: 0.85 }, 0)
+    .to('.menu-logo', { opacity: 1, duration: 0.4, ease: 'power2.out' }, 0.35)
+    .to('.menu-close', { opacity: 1, duration: 0.35, ease: 'power2.out' }, 0.4)
+    .to('.menu-link', {
+      opacity: 1,
+      y: 0,
+      stagger: 0.07,
+      duration: 0.55,
+      ease: 'power3.out',
+    }, 0.45)
+    .to('.menu-contact-title', { opacity: 1, y: 0, duration: 0.5, ease: 'power3.out' }, 0.5)
+    .to('.menu-contact-block', {
+      opacity: 1,
+      y: 0,
+      stagger: 0.08,
+      duration: 0.45,
+      ease: 'power3.out',
+    }, 0.58);
+
+  /* États initiaux des panneaux (hors écran) */
+  gsap.set(panelLeft, { y: '-101%' });
+  gsap.set(panelRight, { y: '101%' });
+
+  function openMenu() {
+    if (menuOpen) return;
+    menuOpen = true;
+    overlay.classList.add('is-open');
+    overlay.setAttribute('aria-hidden', 'false');
+    navToggle.classList.add('is-open');
+    navToggle.setAttribute('aria-expanded', 'true');
+    document.body.style.overflow = 'hidden';
+    openTl.play(0);
+  }
+
+  function closeMenu() {
+    if (!menuOpen) return;
+    menuOpen = false;
+    navToggle.classList.remove('is-open');
+    navToggle.setAttribute('aria-expanded', 'false');
+    openTl.reverse();
+  }
+
+  function toggleMenu() {
+    menuOpen ? closeMenu() : openMenu();
+  }
+
+  navToggle.addEventListener('click', toggleMenu);
+  menuClose.addEventListener('click', closeMenu);
+
+  document.querySelectorAll('.menu-link').forEach((link) => {
+    link.addEventListener('click', closeMenu);
+  });
+
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape' && menuOpen) closeMenu();
+  });
+</script>
+<script src="cursor.js"></script>
+</body>
+</html>

@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Composant — Navbar</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@600;700;800&family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="cursor.css">
+<style>
+  :root {
+    --bg: #050505;
+    --text: #ffffff;
+    --text-muted: rgba(255, 255, 255, 0.55);
+    --border: rgba(255, 255, 255, 0.1);
+    --accent: #FF3B30;
+    --font-display: 'Syne', sans-serif;
+    --font-body: 'DM Sans', sans-serif;
+    --nav-h: 84px;
+    --ease: cubic-bezier(0.65, 0, 0.35, 1);
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: var(--font-body);
+    min-height: 200vh;
+  }
+
+  a { color: inherit; text-decoration: none; }
+  button { font: inherit; color: inherit; background: none; border: none; cursor: pointer; }
+  :focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; }
+
+  /* NAVBAR — name left, menu right */
+  .navbar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 100;
+    height: var(--nav-h);
+    display: flex;
+    align-items: center;
+    transition: background 0.4s var(--ease), height 0.4s var(--ease), border-color 0.4s var(--ease);
+    border-bottom: 1px solid transparent;
+  }
+
+  .navbar.is-scrolled {
+    height: 68px;
+    background: rgba(5, 5, 5, 0.85);
+    backdrop-filter: blur(14px);
+    -webkit-backdrop-filter: blur(14px);
+    border-bottom-color: var(--border);
+  }
+
+  .nav-inner {
+    width: 100%;
+    padding: 0 40px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .nav-name {
+    font-family: var(--font-display);
+    font-weight: 700;
+    font-size: clamp(1.1rem, 2vw, 1.35rem);
+    letter-spacing: -0.03em;
+    color: var(--text);
+    transition: color 0.25s var(--ease);
+  }
+
+  .nav-name:hover { color: var(--accent); }
+
+  .nav-name span { color: var(--accent); }
+
+  .nav-toggle {
+    display: inline-flex;
+    align-items: center;
+    gap: 12px;
+    padding: 0;
+    z-index: 200;
+    position: relative;
+  }
+
+  .nav-toggle-label {
+    font-family: var(--font-display);
+    font-weight: 700;
+    font-size: 1.05rem;
+    letter-spacing: -0.02em;
+    color: var(--text);
+  }
+
+  .nav-toggle-icon {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 6px;
+    width: 28px;
+  }
+
+  .nav-toggle-icon span {
+    display: block;
+    width: 100%;
+    height: 2px;
+    background: var(--text);
+    transition: transform 0.4s var(--ease), background 0.3s var(--ease);
+  }
+
+  .nav-toggle:hover .nav-toggle-icon span { background: var(--accent); }
+
+  .nav-toggle.is-open .nav-toggle-icon span:nth-child(1) {
+    transform: translateY(4px) rotate(45deg);
+  }
+
+  .nav-toggle.is-open .nav-toggle-icon span:nth-child(2) {
+    transform: translateY(-4px) rotate(-45deg);
+  }
+
+  .demo-hint {
+    padding: 140px 40px 0;
+    font-size: 0.9rem;
+    color: var(--text-muted);
+    max-width: 480px;
+    line-height: 1.7;
+  }
+
+  @media (max-width: 640px) {
+    .nav-inner { padding: 0 20px; }
+    .nav-toggle-label { font-size: 0.95rem; }
+    .demo-hint { padding: 120px 20px 0; }
+  }
+</style>
+</head>
+<body>
+
+<header class="navbar" id="navbar">
+  <div class="nav-inner">
+    <a href="#" class="nav-name">Mohamed <span>Bouzayan</span></a>
+
+    <button class="nav-toggle" id="navToggle" aria-label="Ouvrir le menu" aria-expanded="false">
+      <span class="nav-toggle-label">Menu</span>
+      <span class="nav-toggle-icon" aria-hidden="true">
+        <span></span>
+        <span></span>
+      </span>
+    </button>
+  </div>
+</header>
+
+<p class="demo-hint">// Navbar : nom à gauche, Menu à droite. Scrollez pour l’effet de fond. Combinez avec menu.html pour ouvrir le menu fullscreen.</p>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+<script>
+  gsap.registerPlugin(ScrollTrigger);
+
+  gsap.timeline({ defaults: { ease: 'power3.out' } })
+    .from('.navbar', { yPercent: -100, duration: 0.7 })
+    .from('.nav-name', { opacity: 0, x: -16, duration: 0.5 }, '-=0.35')
+    .from('.nav-toggle', { opacity: 0, x: 16, duration: 0.5 }, '-=0.4');
+
+  const navbar = document.getElementById('navbar');
+  ScrollTrigger.create({
+    start: 'top -40',
+    end: 99999,
+    toggleClass: { targets: navbar, className: 'is-scrolled' },
+  });
+
+  const navToggle = document.getElementById('navToggle');
+  navToggle.addEventListener('click', () => {
+    const open = navToggle.classList.toggle('is-open');
+    navToggle.setAttribute('aria-expanded', String(open));
+  });
+</script>
+<script src="cursor.js"></script>
+</body>
+</html>

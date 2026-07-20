@@ -1,0 +1,437 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Composant — Footer</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@600;700;800&family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="cursor.css">
+<style>
+  :root {
+    --bg: #111111;
+    --text: #ffffff;
+    --text-muted: rgba(255, 255, 255, 0.72);
+    --accent: #FF3B30;
+    --pill-bg: #ffffff;
+    --pill-text: #111111;
+    --social-bg: rgba(255, 255, 255, 0.12);
+    --font-display: 'Syne', sans-serif;
+    --font-body: 'DM Sans', sans-serif;
+    --ease: cubic-bezier(0.65, 0, 0.35, 1);
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: var(--font-body);
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+  }
+  a { color: inherit; text-decoration: none; }
+  button { font: inherit; color: inherit; background: none; border: none; cursor: pointer; }
+  :focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; }
+
+  .demo-filler {
+    padding: 60px 40px;
+    font-family: var(--font-body);
+    color: rgba(255, 255, 255, 0.35);
+    font-size: 0.85rem;
+  }
+
+  /* ============ FOOTER ============ */
+  .footer {
+    position: relative;
+    background: var(--bg);
+    padding: 72px 56px 0;
+    overflow: hidden;
+  }
+
+  .footer-main {
+    display: grid;
+    grid-template-columns: 1.15fr 1fr 0.85fr;
+    gap: 48px 64px;
+    align-items: start;
+    padding-bottom: 64px;
+  }
+
+  /* Left — tagline + socials */
+  .footer-brand {
+    opacity: 0;
+    transform: translateY(24px);
+  }
+
+  .footer-tagline {
+    font-family: var(--font-display);
+    font-weight: 700;
+    font-size: clamp(2rem, 3.4vw, 3.25rem);
+    line-height: 1.08;
+    letter-spacing: -0.03em;
+    color: var(--text);
+    max-width: 360px;
+    margin-bottom: 28px;
+  }
+
+  .social-row {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+  }
+
+  .social-pill {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background: var(--social-bg);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--text);
+    transition: background 0.3s var(--ease), transform 0.3s var(--ease), color 0.3s var(--ease);
+  }
+
+  .social-pill svg {
+    width: 16px;
+    height: 16px;
+    fill: currentColor;
+  }
+
+  .social-pill:hover {
+    background: var(--accent);
+    color: var(--text);
+    transform: translateY(-3px);
+  }
+
+  /* Middle / Right columns */
+  .footer-col {
+    opacity: 0;
+    transform: translateY(24px);
+  }
+
+  .footer-label {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 1rem;
+    font-weight: 500;
+    color: var(--text);
+    margin-bottom: 22px;
+  }
+
+  .label-dot {
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+    background: var(--accent);
+    flex-shrink: 0;
+  }
+
+  .pill-group {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    max-width: 380px;
+  }
+
+  .pill-link {
+    display: inline-flex;
+    align-items: center;
+    padding: 11px 20px;
+    background: var(--pill-bg);
+    color: var(--pill-text);
+    border-radius: 100px;
+    font-size: 0.78rem;
+    font-weight: 700;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    transition: background 0.3s var(--ease), color 0.3s var(--ease), transform 0.3s var(--ease);
+  }
+
+  .pill-link:hover {
+    background: var(--accent);
+    color: var(--text);
+    transform: translateY(-2px);
+  }
+
+  .footer-contact-link {
+    display: block;
+    font-size: 1rem;
+    font-weight: 500;
+    color: var(--text);
+    margin-bottom: 10px;
+    transition: color 0.25s var(--ease);
+  }
+
+  .footer-contact-link:hover { color: var(--accent); }
+
+  .footer-address {
+    font-size: 1rem;
+    font-weight: 500;
+    color: var(--text);
+    line-height: 1.45;
+    max-width: 260px;
+  }
+
+  /* Giant wordmark */
+  .footer-wordmark-block {
+    position: relative;
+    margin-top: 0;
+    padding-bottom: 0;
+  }
+
+  .footer-firstname {
+    font-family: var(--font-display);
+    font-weight: 700;
+    font-size: clamp(1.35rem, 3.2vw, 2.35rem);
+    letter-spacing: -0.02em;
+    color: var(--text);
+    line-height: 1.15;
+    margin: 0 0 10px;
+    padding-right: 0.35em;
+    width: max-content;
+    max-width: 100%;
+    overflow: visible;
+    opacity: 0;
+    transform: translateY(16px);
+  }
+
+  .footer-wordmark-wrap {
+    position: relative;
+    overflow: hidden;
+    line-height: 0.78;
+  }
+
+  .footer-wordmark {
+    font-family: var(--font-display);
+    font-weight: 800;
+    font-size: clamp(4.2rem, 16.5vw, 13.5rem);
+    letter-spacing: -0.045em;
+    color: var(--accent);
+    white-space: nowrap;
+    display: flex;
+    align-items: flex-end;
+    width: max-content;
+    max-width: 100%;
+    margin: 0;
+    padding-bottom: 0.04em;
+    position: relative;
+  }
+
+  .wm-letter {
+    display: inline-block;
+    transform: translateY(110%);
+  }
+
+  .wm-letter-y {
+    position: relative;
+  }
+
+  .footer-copy {
+    position: absolute;
+    font-family: var(--font-body);
+    font-size: clamp(0.72rem, 1.05vw, 0.92rem);
+    font-weight: 500;
+    color: var(--text);
+    white-space: nowrap;
+    line-height: 1;
+    z-index: 4;
+    pointer-events: none;
+    opacity: 0;
+  }
+
+  .wordmark-dot {
+    display: inline-block;
+    width: 0.11em;
+    height: 0.11em;
+    background: var(--accent);
+    border-radius: 50%;
+    margin-left: 0.02em;
+    align-self: flex-start;
+    margin-top: 0.18em;
+    transform: scale(0);
+    transform-origin: center;
+    flex-shrink: 0;
+  }
+
+  .scroll-top-btn {
+    position: absolute;
+    right: 0;
+    bottom: 10px;
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+    background: #ffffff;
+    color: #111111;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transform: scale(0);
+    z-index: 5;
+    transition: transform 0.3s var(--ease);
+  }
+
+  .scroll-top-btn:hover { transform: scale(1.06); }
+
+  .scroll-top-btn svg {
+    width: 18px;
+    height: 18px;
+    stroke: currentColor;
+    stroke-width: 2;
+    fill: none;
+  }
+
+  @media (max-width: 980px) {
+    .footer { padding: 56px 28px 0; }
+    .footer-main {
+      grid-template-columns: 1fr 1fr;
+      gap: 40px 32px;
+    }
+    .footer-brand { grid-column: 1 / -1; }
+    .footer-tagline { max-width: 420px; }
+  }
+
+  @media (max-width: 640px) {
+    .footer { padding: 48px 20px 0; }
+    .footer-main {
+      grid-template-columns: 1fr;
+      gap: 36px;
+      padding-bottom: 48px;
+    }
+    .footer-tagline { font-size: clamp(1.75rem, 8vw, 2.25rem); }
+    .footer-copy {
+      font-size: 0.65rem;
+    }
+    .scroll-top-btn {
+      right: 0;
+      bottom: 8px;
+      width: 42px;
+      height: 42px;
+    }
+  }
+</style>
+</head>
+<body>
+
+<p class="demo-filler">// Composant footer autonome — scrollez pour déclencher les animations.</p>
+
+<footer class="footer" id="contact">
+
+  <div class="footer-main">
+    <div class="footer-brand">
+      <h2 class="footer-tagline">
+        Construire des<br>
+        produits qui<br>
+        comptent.
+      </h2>
+      <div class="social-row">
+        <a href="https://github.com/" class="social-pill" aria-label="GitHub" target="_blank" rel="noopener">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2C6.5 2 2 6.5 2 12c0 4.4 2.9 8.2 6.8 9.5.5.1.7-.2.7-.5v-1.7c-2.8.6-3.4-1.3-3.4-1.3-.4-1.1-1.1-1.4-1.1-1.4-.9-.6.1-.6.1-.6 1 .1 1.5 1 1.5 1 .9 1.5 2.3 1.1 2.9.8.1-.6.3-1.1.6-1.3-2.2-.3-4.6-1.1-4.6-5 0-1.1.4-2 1-2.7-.1-.3-.4-1.3.1-2.7 0 0 .8-.3 2.8 1 .8-.2 1.6-.3 2.4-.3s1.6.1 2.4.3c2-.1 2.8-1 2.8-1 .5 1.4.2 2.4.1 2.7.6.7 1 1.6 1 2.7 0 3.9-2.3 4.7-4.6 5 .4.3.7.9.7 1.8v2.7c0 .3.2.6.7.5C19.1 20.2 22 16.4 22 12c0-5.5-4.5-10-10-10z"/></svg>
+        </a>
+        <a href="https://linkedin.com/" class="social-pill" aria-label="LinkedIn" target="_blank" rel="noopener">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6.5 9H3v12h3.5V9zM4.8 3C3.5 3 2.5 4 2.5 5.3c0 1.2 1 2.2 2.3 2.2h.1c1.3 0 2.3-1 2.3-2.2C7.1 4 6.1 3 4.8 3zM21 14.5c0-2.8-1.5-4.6-3.6-4.6-1.7 0-2.4.9-2.8 1.6V9H11v12h3.5v-6.5c0-.9.6-1.8 1.6-1.8 1 0 1.5.7 1.5 1.8V21H21v-6.5z"/></svg>
+        </a>
+        <a href="https://x.com/" class="social-pill" aria-label="X / Twitter" target="_blank" rel="noopener">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M18.2 4H21l-6.6 7.5L22 20h-5.8l-4.5-5.4L6.4 20H3.6l7-8L2 4h6l4.1 5L18.2 4zm-1 14.6h1.6L7 5.3H5.3l11.9 13.3z"/></svg>
+        </a>
+        <a href="mailto:mohammedbouzi177@gmail.com" class="social-pill" aria-label="Email">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20 4H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4-8 5L4 8V6l8 5 8-5v2z"/></svg>
+        </a>
+      </div>
+    </div>
+
+    <div class="footer-col">
+      <span class="footer-label"><span class="label-dot"></span>Navigation</span>
+      <div class="pill-group">
+        <a href="#accueil" class="pill-link">Accueil</a>
+        <a href="#apropos" class="pill-link">À propos</a>
+        <a href="#services" class="pill-link">Services</a>
+        <a href="#projets" class="pill-link">Projets</a>
+        <a href="#competences" class="pill-link">Compétences</a>
+        <a href="#blog" class="pill-link">Blog</a>
+        <a href="#contact" class="pill-link">Contact</a>
+      </div>
+    </div>
+
+    <div class="footer-col">
+      <span class="footer-label"><span class="label-dot"></span>Contact</span>
+      <a href="mailto:mohammedbouzi177@gmail.com" class="footer-contact-link">mohammedbouzi177@gmail.com</a>
+      <a href="tel:+212690815605" class="footer-contact-link">+212 690 815 605</a>
+      <p class="footer-address">Beni Mellal,<br>Maroc</p>
+    </div>
+  </div>
+
+  <div class="footer-wordmark-block">
+    <p class="footer-firstname">Mohamed</p>
+    <div class="footer-wordmark-wrap">
+      <h3 class="footer-wordmark" id="wordmark" aria-label="Bouzayan.">Bouzayan.<span class="wordmark-dot"></span></h3>
+    </div>
+    <span class="footer-copy" id="footerCopy">©2026 Mohamed Bouzayan.</span>
+    <button class="scroll-top-btn" id="scrollTopBtn" aria-label="Retour en haut">
+      <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 19V5M5 12l7-7 7 7"/></svg>
+    </button>
+  </div>
+</footer>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+<script>
+  gsap.registerPlugin(ScrollTrigger);
+
+  const wordmark = document.getElementById('wordmark');
+  const footerCopy = document.getElementById('footerCopy');
+  const wordmarkBlock = document.querySelector('.footer-wordmark-block');
+  const rawText = wordmark.childNodes[0].textContent;
+  wordmark.childNodes[0].textContent = '';
+  [...rawText].forEach((ch) => {
+    const span = document.createElement('span');
+    span.className = 'wm-letter';
+    span.textContent = ch;
+    if (ch === 'y') span.classList.add('wm-letter-y');
+    wordmark.insertBefore(span, wordmark.querySelector('.wordmark-dot'));
+  });
+
+  function placeCopyBesideY() {
+    const yLetter = wordmark.querySelector('.wm-letter-y');
+    if (!yLetter || !footerCopy) return;
+    const blockRect = wordmarkBlock.getBoundingClientRect();
+    const yRect = yLetter.getBoundingClientRect();
+    /* juste AVANT le "y" (à gauche), en bas de la ligne */
+    const left = yRect.left - blockRect.left - footerCopy.offsetWidth - 10;
+    const top = yRect.bottom - blockRect.top - footerCopy.offsetHeight - 2;
+    footerCopy.style.left = `${Math.max(0, left)}px`;
+    footerCopy.style.top = `${top}px`;
+  }
+
+  placeCopyBesideY();
+  window.addEventListener('resize', placeCopyBesideY);
+
+  const footerTl = gsap.timeline({
+    scrollTrigger: { trigger: '.footer', start: 'top 75%' },
+    defaults: { ease: 'power3.out' },
+  });
+
+  footerTl
+    .to('.footer-brand', { opacity: 1, y: 0, duration: 0.7 })
+    .to('.footer-col', { opacity: 1, y: 0, stagger: 0.12, duration: 0.65 }, 0.15)
+    .to('.footer-firstname', { opacity: 1, y: 0, duration: 0.55 }, '-=0.35')
+    .to('.wm-letter', { y: 0, stagger: 0.02, duration: 0.7, ease: 'power4.out' }, '-=0.3')
+    .to('.wordmark-dot', { scale: 1, duration: 0.45, ease: 'back.out(3)' }, '-=0.25')
+    .to('.scroll-top-btn', { scale: 1, duration: 0.4, ease: 'back.out(2)' }, '-=0.35')
+    .to('.footer-copy', { opacity: 1, duration: 0.4 }, '-=0.2');
+
+  footerTl.eventCallback('onComplete', placeCopyBesideY);
+  /* recalcule aussi pendant l'anim des lettres */
+  gsap.ticker.add(placeCopyBesideY);
+  setTimeout(() => gsap.ticker.remove(placeCopyBesideY), 2500);
+
+  document.getElementById('scrollTopBtn').addEventListener('click', () => {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  });
+</script>
+<script src="cursor.js"></script>
+</body>
+</html>

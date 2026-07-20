@@ -1,0 +1,768 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Contact — Mohamed Bouzayan</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@600;700;800&family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="cursor.css">
+<style>
+  :root {
+    --bg: #050505;
+    --text: #ffffff;
+    --text-muted: rgba(255, 255, 255, 0.62);
+    --border: rgba(255, 255, 255, 0.22);
+    --accent: #FF3B30;
+    --font-display: 'Syne', sans-serif;
+    --font-body: 'DM Sans', sans-serif;
+    --ease: cubic-bezier(0.65, 0, 0.35, 1);
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: var(--font-body);
+    min-height: 100vh;
+    overflow-x: hidden;
+  }
+
+  a { color: inherit; text-decoration: none; }
+  button { font: inherit; color: inherit; background: none; border: none; cursor: pointer; }
+  :focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; }
+
+  /* ============ CONTACT HERO ============ */
+  .contact-hero {
+    position: relative;
+    min-height: auto;
+    padding: 88px 48px 40px;
+    overflow: hidden;
+  }
+
+  .contact-hero-inner {
+    position: relative;
+    z-index: 2;
+    max-width: 980px;
+    margin: 0 auto;
+    overflow: visible;
+  }
+
+  .contact-heading {
+    position: relative;
+    width: max-content;
+    max-width: 100%;
+    margin: 0 auto 28px;
+    left: -5vw;
+  }
+
+  /* Label */
+  .contact-label {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 36px;
+    opacity: 0;
+    transform: translateY(20px);
+  }
+
+  .contact-label-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: var(--accent);
+    flex-shrink: 0;
+  }
+
+  .contact-label-text {
+    font-size: 0.78rem;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+  }
+
+  .contact-label-line {
+    display: flex;
+    align-items: center;
+    width: 72px;
+    height: 1px;
+    background: var(--text);
+    position: relative;
+  }
+
+  .contact-label-line::after {
+    content: '';
+    position: absolute;
+    right: -1px;
+    width: 6px;
+    height: 6px;
+    border-right: 1.5px solid var(--text);
+    border-bottom: 1.5px solid var(--text);
+    transform: rotate(-45deg);
+  }
+
+  /* Title */
+  .contact-title {
+    position: relative;
+    font-family: var(--font-display);
+    font-weight: 800;
+    font-size: clamp(2.6rem, 7.2vw, 5.4rem);
+    line-height: 1.02;
+    letter-spacing: -0.04em;
+    text-align: left;
+    width: max-content;
+    max-width: 100%;
+    margin: 0;
+  }
+
+  .contact-title-line {
+    display: block;
+    overflow: hidden;
+  }
+
+  .contact-title-line > span {
+    display: inline-block;
+    opacity: 0;
+    transform: translateY(110%);
+  }
+
+  .contact-title-row {
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    gap: clamp(14px, 1.8vw, 24px);
+    flex-wrap: nowrap;
+    white-space: nowrap;
+  }
+
+  .contact-pill-img {
+    display: inline-block;
+    width: clamp(120px, 14vw, 190px);
+    height: 0.78em;
+    border-radius: 100px;
+    overflow: hidden;
+    flex-shrink: 0;
+    vertical-align: middle;
+    opacity: 0;
+    transform: scale(0.7);
+  }
+
+  .contact-pill-img img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center 25%;
+    display: block;
+  }
+
+  .contact-title-row .contact-title-line {
+    overflow: visible;
+  }
+
+  .contact-title-bang {
+    position: relative;
+  }
+
+  .contact-title-bang::after {
+    content: '';
+    position: absolute;
+    top: 0.08em;
+    right: 0.02em;
+    width: 0.16em;
+    height: 0.16em;
+    border-radius: 50%;
+    background: var(--accent);
+  }
+
+  .contact-lead {
+    width: max-content;
+    max-width: 100%;
+    margin: 0 auto 56px;
+    text-align: left;
+    font-size: clamp(0.95rem, 1.5vw, 1.08rem);
+    line-height: 1.55;
+    color: var(--text-muted);
+    opacity: 0;
+    transform: translateY(18px);
+  }
+
+  .contact-lead span {
+    display: block;
+  }
+
+  /* Interests */
+  .contact-interests {
+    max-width: 720px;
+    margin: 0 auto;
+    opacity: 0;
+    transform: translateY(24px);
+  }
+
+  .contact-interests-title {
+    font-family: var(--font-display);
+    font-weight: 700;
+    font-size: clamp(1.25rem, 2.4vw, 1.65rem);
+    letter-spacing: -0.02em;
+    margin-bottom: 22px;
+  }
+
+  .interest-chips {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+  }
+
+  .interest-chip {
+    padding: 12px 22px;
+    border: 1px solid var(--border);
+    border-radius: 100px;
+    font-size: 0.92rem;
+    font-weight: 500;
+    color: var(--text);
+    transition: background 0.3s var(--ease), border-color 0.3s var(--ease), color 0.3s var(--ease), transform 0.3s var(--ease);
+  }
+
+  .interest-chip:hover {
+    border-color: var(--text);
+    transform: translateY(-2px);
+  }
+
+  .interest-chip.is-active {
+    background: var(--accent);
+    color: #111;
+    border-color: var(--accent);
+  }
+
+  /* ============ CONTACT FORM ============ */
+  .contact-form-section {
+    position: relative;
+    background: var(--bg);
+    padding: 48px 48px 120px;
+    z-index: 2;
+  }
+
+  .contact-form {
+    max-width: 720px;
+    margin: 0 auto;
+  }
+
+  .form-header {
+    text-align: center;
+    margin-bottom: 40px;
+  }
+
+  .form-header-dot {
+    display: block;
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: var(--accent);
+    margin: 0 auto 16px;
+  }
+
+  .form-title {
+    font-family: var(--font-display);
+    font-weight: 800;
+    font-size: clamp(1.8rem, 3.5vw, 2.6rem);
+    letter-spacing: -0.03em;
+  }
+
+  .form-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+    margin-bottom: 20px;
+  }
+
+  .form-field {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin-bottom: 20px;
+  }
+
+  .form-row .form-field {
+    margin-bottom: 0;
+  }
+
+  .form-label {
+    font-size: 0.95rem;
+    font-weight: 500;
+    color: var(--text);
+  }
+
+  .form-label span {
+    color: var(--text);
+  }
+
+  /* Smooth input */
+  .smooth-input {
+    position: relative;
+    width: 100%;
+    background: #141414;
+    border-radius: 16px;
+    padding: 18px 20px;
+    transition: outline 0.2s var(--ease), background 0.2s var(--ease);
+  }
+
+  .smooth-input:focus-within {
+    outline: 2px solid rgba(255, 59, 48, 0.45);
+    outline-offset: 2px;
+  }
+
+  .smooth-input input,
+  .smooth-input textarea {
+    width: 100%;
+    background: transparent;
+    border: none;
+    outline: none;
+    color: var(--text);
+    font-family: var(--font-body);
+    font-size: 1.05rem;
+    font-weight: 500;
+    caret-color: transparent;
+    resize: none;
+  }
+
+  .smooth-input.is-textarea textarea {
+    caret-color: var(--accent);
+  }
+
+  .smooth-input input::placeholder,
+  .smooth-input textarea::placeholder {
+    color: rgba(255, 255, 255, 0.28);
+  }
+
+  .smooth-input textarea {
+    min-height: 140px;
+    line-height: 1.5;
+    caret-color: var(--accent);
+  }
+
+  .smooth-input.is-textarea:focus-within {
+    outline-color: rgba(255, 59, 48, 0.45);
+  }
+
+  .smooth-measure {
+    position: absolute;
+    top: 0;
+    left: 0;
+    visibility: hidden;
+    white-space: pre;
+    pointer-events: none;
+    font-size: 1.05rem;
+    font-weight: 500;
+    font-family: var(--font-body);
+  }
+
+  .smooth-caret {
+    position: absolute;
+    top: 50%;
+    left: 20px;
+    width: 2px;
+    height: 1.05em;
+    background: var(--accent);
+    border-radius: 1px;
+    transform: translateY(-50%);
+    opacity: 0;
+    pointer-events: none;
+    will-change: transform, opacity;
+  }
+
+  .form-submit {
+    width: 100%;
+    margin-top: 8px;
+    padding: 18px 28px;
+    border-radius: 100px;
+    background: var(--accent);
+    color: #111;
+    font-family: var(--font-display);
+    font-weight: 800;
+    font-size: 0.95rem;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    transition: transform 0.3s var(--ease), filter 0.3s var(--ease);
+  }
+
+  .form-submit:hover {
+    transform: translateY(-2px);
+    filter: brightness(1.05);
+  }
+
+  @media (max-width: 900px) {
+    .contact-form-section { padding: 40px 24px 100px; }
+  }
+
+  @media (max-width: 640px) {
+    .contact-form-section { padding: 32px 18px 88px; }
+    .form-row { grid-template-columns: 1fr; gap: 0; }
+    .form-row .form-field { margin-bottom: 20px; }
+  }
+
+  /* Decorative shapes */
+  .contact-shape {
+    position: absolute;
+    pointer-events: none;
+    z-index: 1;
+    user-select: none;
+  }
+
+  .contact-shape img {
+    display: block;
+    width: 100%;
+    height: auto;
+  }
+
+  .shape-cubes {
+    left: 0;
+    bottom: 6%;
+    width: clamp(90px, 12vw, 150px);
+    opacity: 0;
+    transform: translateY(40px);
+    z-index: 1;
+  }
+
+  .shape-smiley {
+    right: -2%;
+    top: 22%;
+    width: clamp(100px, 14vw, 180px);
+    opacity: 0;
+    transform: translateX(40px);
+    z-index: 1;
+  }
+
+  .shape-squiggle {
+    position: absolute;
+    left: calc(100% + 8px);
+    top: -8%;
+    right: auto;
+    width: clamp(72px, 9vw, 112px);
+    opacity: 0;
+    transform: scale(0.6);
+    z-index: 3;
+    pointer-events: none;
+  }
+
+  .shape-squiggle svg {
+    display: block;
+    width: 100%;
+    height: auto;
+    overflow: visible;
+  }
+
+  .shape-dot {
+    right: 28%;
+    top: 42%;
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background: var(--accent);
+    box-shadow: 0 0 18px rgba(255, 59, 48, 0.55);
+    opacity: 0;
+    transform: scale(0);
+  }
+
+  @media (max-width: 900px) {
+    .contact-hero { padding: 72px 24px 80px; }
+    .shape-smiley { right: -8%; top: 14%; width: 120px; }
+    .shape-cubes { width: 100px; bottom: 4%; left: 0; }
+    .shape-squiggle { width: 68px; top: -4%; left: calc(100% - 4px); }
+    .shape-dot { display: none; }
+  }
+
+  @media (max-width: 640px) {
+    .contact-hero { padding: 56px 18px 72px; }
+    .contact-label { margin-bottom: 28px; }
+    .contact-lead { margin-bottom: 40px; }
+    .interest-chip { padding: 10px 16px; font-size: 0.85rem; }
+    .shape-smiley { width: 90px; opacity: 0.55; }
+    .shape-cubes { width: 80px; }
+    .shape-squiggle { width: 52px; left: calc(100% - 20px); top: 0; }
+  }
+</style>
+</head>
+<body>
+
+<section class="contact-hero" id="contact">
+  <!-- Decor -->
+  <div class="contact-shape shape-cubes">
+    <img src="images/Contact-Page/about-shape-2.png" alt="" width="150" height="150">
+  </div>
+  <div class="contact-shape shape-smiley">
+    <img src="images/Contact-Page/about-shape.png" alt="" width="180" height="180">
+  </div>
+  <span class="contact-shape shape-dot" aria-hidden="true"></span>
+
+  <div class="contact-hero-inner">
+    <div class="contact-heading">
+      <div class="contact-label">
+        <span class="contact-label-dot"></span>
+        <span class="contact-label-text">Contact me</span>
+        <span class="contact-label-line" aria-hidden="true"></span>
+      </div>
+
+      <h1 class="contact-title">
+        <span class="contact-title-line"><span>Let's discuss</span></span>
+        <span class="contact-title-row">
+          <span class="contact-pill-img">
+            <img src="images/Contact-Page/image.png" alt="">
+          </span>
+          <span class="contact-title-line"><span>your project<span class="contact-title-bang">!</span></span></span>
+        </span>
+        <div class="shape-squiggle" aria-hidden="true">
+          <svg xmlns="http://www.w3.org/2000/svg" width="123" height="130" viewBox="0 0 123 130" fill="none">
+            <path d="M58.2803 1.15449C63.3023 14.3017 71.049 54.3533 48.1082 67.0973C36.1831 73.4283 11.7107 77.3064 2.37778 43.9355C-1.14293 31.3468 9.61622 20.8908 32.0893 28.8395C45.055 33.4255 76.4207 44.0467 90.5787 70.0771C98.0511 83.8154 104.166 111.84 99.1745 129.671M99.1745 129.671C100.942 121.014 108.128 104.495 122.737 107.673M99.1745 129.671C100.181 123.978 97.0522 110.014 76.485 99.698M75.3644 33.2431C80.479 35.6688 96.6446 46.4742 101.81 64.2891" stroke="#ffffff" stroke-width="1.5"></path>
+          </svg>
+        </div>
+      </h1>
+    </div>
+
+    <p class="contact-lead">
+      <span>Let's start a conversation!</span>
+      <span>Fill out our contact form and we'll get back</span>
+      <span>to you as soon as possible.</span>
+    </p>
+
+    <div class="contact-interests">
+      <h2 class="contact-interests-title">I'm Interested in...</h2>
+      <div class="interest-chips" id="interestChips">
+        <button type="button" class="interest-chip" data-interest="Branding">Branding</button>
+        <button type="button" class="interest-chip" data-interest="Design Concept">Design Concept</button>
+        <button type="button" class="interest-chip" data-interest="App Design">App Design</button>
+        <button type="button" class="interest-chip" data-interest="Web Design">Web Design</button>
+        <button type="button" class="interest-chip" data-interest="Android Development">Android Development</button>
+        <button type="button" class="interest-chip" data-interest="iOS Development">iOS Development</button>
+        <button type="button" class="interest-chip" data-interest="Logo">Logo</button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="contact-form-section" id="quote">
+  <form class="contact-form" id="contactForm" novalidate>
+    <div class="form-header">
+      <span class="form-header-dot" aria-hidden="true"></span>
+      <h2 class="form-title">Request a Quote</h2>
+    </div>
+
+    <div class="form-row">
+      <div class="form-field">
+        <label class="form-label" for="fullName">Full name<span>*</span></label>
+        <div class="smooth-input" data-smooth-input>
+          <input id="fullName" name="fullName" type="text" required autocomplete="name">
+          <span class="smooth-measure" aria-hidden="true"></span>
+          <span class="smooth-caret" aria-hidden="true"></span>
+        </div>
+      </div>
+      <div class="form-field">
+        <label class="form-label" for="email">Email address<span>*</span></label>
+        <div class="smooth-input" data-smooth-input>
+          <input id="email" name="email" type="email" required autocomplete="email">
+          <span class="smooth-measure" aria-hidden="true"></span>
+          <span class="smooth-caret" aria-hidden="true"></span>
+        </div>
+      </div>
+    </div>
+
+    <div class="form-row">
+      <div class="form-field">
+        <label class="form-label" for="website">Website link</label>
+        <div class="smooth-input" data-smooth-input>
+          <input id="website" name="website" type="url" autocomplete="url">
+          <span class="smooth-measure" aria-hidden="true"></span>
+          <span class="smooth-caret" aria-hidden="true"></span>
+        </div>
+      </div>
+      <div class="form-field">
+        <label class="form-label" for="phone">Phone number<span>*</span></label>
+        <div class="smooth-input" data-smooth-input>
+          <input id="phone" name="phone" type="tel" required autocomplete="tel" inputmode="numeric" pattern="\+?[0-9]+" maxlength="16">
+          <span class="smooth-measure" aria-hidden="true"></span>
+          <span class="smooth-caret" aria-hidden="true"></span>
+        </div>
+      </div>
+    </div>
+
+    <div class="form-field">
+      <label class="form-label" for="message">How Can We Help You<span>*</span></label>
+      <div class="smooth-input is-textarea">
+        <textarea id="message" name="message" required rows="5"></textarea>
+      </div>
+    </div>
+
+    <button type="submit" class="form-submit">Send Message</button>
+  </form>
+</section>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+<script>
+  const tl = gsap.timeline({
+    defaults: { ease: 'power3.out' },
+    onComplete() {
+      gsap.to('.shape-cubes', {
+        y: '+=14',
+        rotation: 3,
+        duration: 3.5,
+        yoyo: true,
+        repeat: -1,
+        ease: 'sine.inOut',
+      });
+      gsap.to('.shape-smiley', {
+        y: '+=18',
+        rotation: -4,
+        duration: 4.2,
+        yoyo: true,
+        repeat: -1,
+        ease: 'sine.inOut',
+      });
+      gsap.to('.shape-squiggle', {
+        y: '+=10',
+        duration: 2.4,
+        yoyo: true,
+        repeat: -1,
+        ease: 'sine.inOut',
+      });
+    },
+  });
+
+  tl
+    .to('.contact-label', { opacity: 1, y: 0, duration: 0.6 })
+    .to('.contact-title-line > span', { opacity: 1, y: 0, stagger: 0.12, duration: 0.75, ease: 'power4.out' }, 0.15)
+    .to('.contact-pill-img', { opacity: 1, scale: 1, duration: 0.65, ease: 'back.out(1.8)' }, 0.35)
+    .to('.contact-lead', { opacity: 1, y: 0, duration: 0.55 }, 0.55)
+    .to('.contact-interests', { opacity: 1, y: 0, duration: 0.6 }, 0.7)
+    .to('.shape-cubes', { opacity: 1, y: 0, duration: 0.9, ease: 'power3.out' }, 0.35)
+    .to('.shape-smiley', { opacity: 1, x: 0, duration: 1, ease: 'power3.out' }, 0.45)
+    .to('.shape-squiggle', { opacity: 1, scale: 1, duration: 0.7, ease: 'back.out(2)' }, 0.55)
+    .to('.shape-dot', { opacity: 1, scale: 1, duration: 0.45, ease: 'back.out(3)' }, 0.7);
+
+  document.querySelectorAll('.interest-chip').forEach((chip) => {
+    chip.addEventListener('click', () => chip.classList.toggle('is-active'));
+  });
+
+  /* Smooth caret — spring physics (vanilla SmoothInput) */
+  function createSpring({ mass, damping, stiffness }, initial = 0) {
+    let value = initial;
+    let velocity = 0;
+    let target = initial;
+    return {
+      set(v) { target = v; },
+      update(dt) {
+        const force = -stiffness * (value - target);
+        const damper = -damping * velocity;
+        velocity += ((force + damper) / mass) * dt;
+        value += velocity * dt;
+        return value;
+      },
+    };
+  }
+
+  function initSmoothInput(wrapper) {
+    const input = wrapper.querySelector('input');
+    const measure = wrapper.querySelector('.smooth-measure');
+    const caret = wrapper.querySelector('.smooth-caret');
+    if (!input || !measure || !caret) return;
+
+    const springX = createSpring({ mass: 0.5, damping: 30, stiffness: 500 }, 20);
+    const springOp = createSpring({ mass: 0.4, damping: 28, stiffness: 420 }, 0);
+    let focused = false;
+    let running = false;
+    let last = performance.now();
+
+    function measurePrefix(text) {
+      const styles = window.getComputedStyle(input);
+      measure.style.font = `${styles.fontStyle} ${styles.fontWeight} ${styles.fontSize} ${styles.fontFamily}`;
+      measure.style.letterSpacing = styles.letterSpacing;
+      measure.textContent = text;
+      return (text.length ? measure.offsetWidth : 0) + 20;
+    }
+
+    function updateCaret() {
+      const start = input.selectionStart ?? 0;
+      const end = input.selectionEnd ?? 0;
+      const hasSelection = start !== end;
+      const index = hasSelection
+        ? (input.selectionDirection === 'backward' ? start : end)
+        : start;
+      const x = measurePrefix(input.value.slice(0, index));
+      springX.set(Math.min(x, wrapper.clientWidth - 22));
+      springOp.set(!focused || hasSelection ? 0 : 1);
+    }
+
+    function tick(now) {
+      if (!running) return;
+      const dt = Math.min((now - last) / 1000, 0.032);
+      last = now;
+      const x = springX.update(dt);
+      const op = springOp.update(dt);
+      caret.style.transform = `translate(${x - 20}px, -50%)`;
+      caret.style.opacity = String(Math.max(0, Math.min(1, op)));
+      if (!focused && op < 0.02) {
+        running = false;
+        return;
+      }
+      requestAnimationFrame(tick);
+    }
+
+    function startLoop() {
+      if (running) return;
+      running = true;
+      last = performance.now();
+      requestAnimationFrame(tick);
+    }
+
+    input.addEventListener('focus', () => { focused = true; updateCaret(); startLoop(); });
+    input.addEventListener('blur', () => { focused = false; springOp.set(0); startLoop(); });
+    input.addEventListener('input', () => { updateCaret(); startLoop(); });
+    input.addEventListener('click', () => {
+      requestAnimationFrame(() => { updateCaret(); startLoop(); });
+    });
+    input.addEventListener('keyup', () => { updateCaret(); startLoop(); });
+    document.addEventListener('selectionchange', () => {
+      if (document.activeElement === input) { updateCaret(); startLoop(); }
+    });
+  }
+
+  document.querySelectorAll('[data-smooth-input]').forEach(initSmoothInput);
+
+  /* Phone: chiffres uniquement (+ optionnel au début) */
+  const phoneInput = document.getElementById('phone');
+  phoneInput.addEventListener('beforeinput', (e) => {
+    if (!e.data) return;
+    const next = phoneInput.value.slice(0, phoneInput.selectionStart) + e.data + phoneInput.value.slice(phoneInput.selectionEnd);
+    if (!/^\+?[0-9]*$/.test(next.replace(/\s/g, ''))) e.preventDefault();
+  });
+  phoneInput.addEventListener('input', () => {
+    let v = phoneInput.value.replace(/[^\d+]/g, '');
+    if (v.indexOf('+') > 0) v = v.replace(/\+/g, '');
+    if ((v.match(/\+/g) || []).length > 1) v = '+' + v.replace(/\+/g, '');
+    if (phoneInput.value !== v) phoneInput.value = v;
+  });
+  phoneInput.addEventListener('paste', (e) => {
+    e.preventDefault();
+    let text = (e.clipboardData || window.clipboardData).getData('text').replace(/[^\d+]/g, '');
+    if (text.indexOf('+') > 0) text = text.replace(/\+/g, '');
+    const start = phoneInput.selectionStart ?? phoneInput.value.length;
+    const end = phoneInput.selectionEnd ?? phoneInput.value.length;
+    let next = phoneInput.value.slice(0, start) + text + phoneInput.value.slice(end);
+    next = next.replace(/[^\d+]/g, '');
+    if (next.indexOf('+') > 0) next = next.replace(/\+/g, '');
+    phoneInput.value = next;
+    phoneInput.dispatchEvent(new Event('input', { bubbles: true }));
+  });
+
+  document.getElementById('contactForm').addEventListener('submit', (e) => {
+    e.preventDefault();
+    const interests = [...document.querySelectorAll('.interest-chip.is-active')]
+      .map((c) => c.dataset.interest);
+    const data = Object.fromEntries(new FormData(e.target).entries());
+    console.log('Contact form:', { ...data, interests });
+    e.target.reset();
+    alert('Message envoyé — merci !');
+  });
+</script>
+<script src="cursor.js"></script>
+</body>
+</html>
