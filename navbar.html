@@ -44,16 +44,18 @@
     height: var(--nav-h);
     display: flex;
     align-items: center;
-    transition: background 0.4s var(--ease), height 0.4s var(--ease), border-color 0.4s var(--ease);
+    transition: transform 0.45s var(--ease), height 0.4s var(--ease), border-color 0.4s var(--ease);
     border-bottom: 1px solid transparent;
+    will-change: transform;
   }
 
   .navbar.is-scrolled {
     height: 68px;
-    background: rgba(5, 5, 5, 0.85);
-    backdrop-filter: blur(14px);
-    -webkit-backdrop-filter: blur(14px);
-    border-bottom-color: var(--border);
+  }
+
+  .navbar.is-away {
+    transform: translateY(-100%);
+    pointer-events: none;
   }
 
   .nav-inner {
@@ -158,17 +160,17 @@
 <script>
   gsap.registerPlugin(ScrollTrigger);
 
-  gsap.timeline({ defaults: { ease: 'power3.out' } })
+  gsap.timeline({
+    defaults: { ease: 'power3.out' },
+    onComplete() {
+      gsap.set('.navbar', { clearProps: 'transform' });
+    },
+  })
     .from('.navbar', { yPercent: -100, duration: 0.7 })
     .from('.nav-name', { opacity: 0, x: -16, duration: 0.5 }, '-=0.35')
     .from('.nav-toggle', { opacity: 0, x: 16, duration: 0.5 }, '-=0.4');
 
   const navbar = document.getElementById('navbar');
-  ScrollTrigger.create({
-    start: 'top -40',
-    end: 99999,
-    toggleClass: { targets: navbar, className: 'is-scrolled' },
-  });
 
   const navToggle = document.getElementById('navToggle');
   navToggle.addEventListener('click', () => {
@@ -176,6 +178,7 @@
     navToggle.setAttribute('aria-expanded', String(open));
   });
 </script>
+<script src="navbar-scroll.js"></script>
 <script src="cursor.js"></script>
 </body>
 </html>

@@ -13,9 +13,9 @@
     --bg: #111111;
     --text: #ffffff;
     --text-muted: rgba(255, 255, 255, 0.72);
-    --accent: #FF3B30;
-    --pill-bg: #ffffff;
-    --pill-text: #111111;
+    --accent: #FF5F5F;
+    --pill-bg: rgba(255, 255, 255, 0.08);
+    --pill-text: #ffffff;
     --social-bg: rgba(255, 255, 255, 0.12);
     --font-display: 'Syne', sans-serif;
     --font-body: 'DM Sans', sans-serif;
@@ -23,6 +23,9 @@
   }
 
   * { margin: 0; padding: 0; box-sizing: border-box; }
+  html, body {
+    overflow-x: hidden;
+  }
   body {
     background: var(--bg);
     color: var(--text);
@@ -36,6 +39,62 @@
   button { font: inherit; color: inherit; background: none; border: none; cursor: pointer; }
   :focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; }
 
+  /* ============ NAVBAR ============ */
+  .navbar { position: fixed; top: 0; left: 0; right: 0; z-index: 200; height: 84px; display: flex; align-items: center; transition: transform 0.45s var(--ease), height 0.4s var(--ease), border-color 0.4s var(--ease); border-bottom: 1px solid transparent; will-change: transform; }
+  .navbar.is-scrolled { height: 68px; }
+  .navbar.is-away { transform: translateY(-100%); pointer-events: none; }
+  .nav-inner { width: 100%; padding: 0 40px; display: flex; align-items: center; justify-content: space-between; }
+  .nav-name { font-family: var(--font-display); font-weight: 700; font-size: clamp(1.1rem,2vw,1.35rem); letter-spacing: -0.03em; color: var(--text); transition: color 0.25s var(--ease); }
+  .nav-name:hover { color: var(--accent); }
+  .nav-name span { color: var(--accent); }
+  .nav-toggle { display: inline-flex; align-items: center; gap: 12px; padding: 0; z-index: 200; position: relative; }
+  .nav-toggle-label { font-family: var(--font-display); font-weight: 700; font-size: 1.05rem; letter-spacing: -0.02em; color: var(--text); }
+  .nav-toggle-icon { display: flex; flex-direction: column; justify-content: center; gap: 6px; width: 28px; }
+  .nav-toggle-icon span { display: block; width: 100%; height: 2px; background: var(--text); transition: transform 0.4s var(--ease), background 0.3s var(--ease); }
+  .nav-toggle:hover .nav-toggle-icon span { background: var(--accent); }
+  .nav-toggle.is-open .nav-toggle-icon span:nth-child(1) { transform: translateY(4px) rotate(45deg); }
+  .nav-toggle.is-open .nav-toggle-icon span:nth-child(2) { transform: translateY(-4px) rotate(-45deg); }
+
+  /* ============ MENU OVERLAY ============ */
+  .menu-overlay { position: fixed; inset: 0; z-index: 150; display: flex; pointer-events: none; visibility: hidden; }
+  .menu-overlay.is-open { pointer-events: auto; visibility: visible; }
+  .menu-panel { position: relative; height: 100%; overflow: hidden; will-change: transform; }
+  .menu-panel-left { flex: 1.15; background: #0a0a0a; transform: translateY(-101%); }
+  .menu-panel-right { flex: 0.85; background: #1a1a1a; transform: translateY(101%); }
+  .menu-panel-inner { height: 100%; display: flex; flex-direction: column; padding: 100px 48px 40px; }
+  .menu-nav { display: flex; flex-direction: column; gap: 2px; margin: 20px 0 auto; }
+  .menu-link { display: flex; align-items: center; gap: 14px; padding: 6px 0; opacity: 0; transform: translateY(20px); }
+  .menu-link-index { font-size: 0.72rem; font-weight: 500; color: rgba(255,255,255,0.45); min-width: 24px; }
+  .menu-link-label { font-family: var(--font-display); font-weight: 700; font-size: clamp(1.35rem, 2.8vw, 2.15rem); letter-spacing: -0.03em; line-height: 1.1; color: var(--text); transition: color 0.3s var(--ease); }
+  .menu-link-plus { margin-left: auto; width: 22px; height: 22px; display: flex; align-items: center; justify-content: center; font-size: 1rem; color: var(--text); transition: transform 0.35s var(--ease), color 0.3s var(--ease); }
+  .menu-link:hover .menu-link-label { color: var(--accent); }
+  .menu-link:hover .menu-link-plus { transform: rotate(45deg); color: var(--accent); }
+  .menu-contact { margin-top: auto; margin-bottom: auto; max-width: 300px; }
+  .menu-contact-title { font-family: var(--font-display); font-weight: 700; font-size: clamp(1.25rem, 2vw, 1.6rem); letter-spacing: -0.03em; margin-bottom: 24px; opacity: 0; transform: translateY(20px); }
+  .menu-contact-block { margin-bottom: 18px; opacity: 0; transform: translateY(16px); }
+  .menu-contact-label { display: block; font-size: 0.78rem; color: rgba(255,255,255,0.45); margin-bottom: 4px; }
+  .menu-contact-value { font-size: 0.95rem; font-weight: 500; color: var(--text); line-height: 1.4; transition: color 0.25s var(--ease); }
+  a.menu-contact-value:hover { color: var(--accent); }
+  .menu-socials { display: flex; gap: 10px; margin-top: 4px; }
+  .menu-social { width: 40px; height: 40px; border-radius: 50%; border: 1px solid rgba(255,255,255,0.1); display: flex; align-items: center; justify-content: center; transition: background 0.3s var(--ease), border-color 0.3s var(--ease), transform 0.3s var(--ease); }
+  .menu-social svg { width: 15px; height: 15px; fill: currentColor; }
+  .menu-social:hover { background: var(--accent); border-color: var(--accent); transform: translateY(-2px); }
+
+  @media (max-width: 900px) {
+    .menu-overlay { flex-direction: column; }
+    .menu-panel-left, .menu-panel-right { flex: none; width: 100%; }
+    .menu-panel-left { height: 58%; }
+    .menu-panel-right { height: 42%; }
+    .menu-panel-inner { padding: 88px 24px 28px; }
+    .menu-nav { margin: 12px 0 8px; gap: 0; overflow-y: auto; }
+    .menu-link { padding: 4px 0; }
+    .menu-link-label { font-size: clamp(1.15rem, 5.5vw, 1.5rem); }
+    .menu-contact { margin-top: 8px; margin-bottom: 0; }
+    .menu-contact-title { margin-bottom: 14px; font-size: 1.15rem; }
+    .menu-contact-block { margin-bottom: 10px; }
+    .nav-inner { padding: 0 20px; }
+  }
+
   .demo-filler {
     padding: 60px 40px;
     font-family: var(--font-body);
@@ -47,19 +106,18 @@
   .footer {
     position: relative;
     background: var(--bg);
-    padding: 72px 56px 0;
+    padding: 80px 56px 0;
     overflow: hidden;
   }
 
   .footer-main {
     display: grid;
-    grid-template-columns: 1.15fr 1fr 0.85fr;
-    gap: 48px 64px;
+    grid-template-columns: 1.1fr 1fr 0.9fr;
+    gap: 48px 56px;
     align-items: start;
-    padding-bottom: 64px;
+    padding-bottom: 72px;
   }
 
-  /* Left — tagline + socials */
   .footer-brand {
     opacity: 0;
     transform: translateY(24px);
@@ -68,12 +126,12 @@
   .footer-tagline {
     font-family: var(--font-display);
     font-weight: 700;
-    font-size: clamp(2rem, 3.4vw, 3.25rem);
-    line-height: 1.08;
+    font-size: clamp(2rem, 3.2vw, 3.1rem);
+    line-height: 1.12;
     letter-spacing: -0.03em;
     color: var(--text);
-    max-width: 360px;
-    margin-bottom: 28px;
+    max-width: 340px;
+    margin-bottom: 32px;
   }
 
   .social-row {
@@ -106,7 +164,6 @@
     transform: translateY(-3px);
   }
 
-  /* Middle / Right columns */
   .footer-col {
     opacity: 0;
     transform: translateY(24px);
@@ -119,7 +176,7 @@
     font-size: 1rem;
     font-weight: 500;
     color: var(--text);
-    margin-bottom: 22px;
+    margin-bottom: 24px;
   }
 
   .label-dot {
@@ -134,19 +191,19 @@
     display: flex;
     flex-wrap: wrap;
     gap: 10px;
-    max-width: 380px;
+    max-width: 400px;
   }
 
   .pill-link {
     display: inline-flex;
     align-items: center;
-    padding: 11px 20px;
+    padding: 12px 22px;
     background: var(--pill-bg);
     color: var(--pill-text);
     border-radius: 100px;
-    font-size: 0.78rem;
+    font-size: 0.75rem;
     font-weight: 700;
-    letter-spacing: 0.04em;
+    letter-spacing: 0.06em;
     text-transform: uppercase;
     transition: background 0.3s var(--ease), color 0.3s var(--ease), transform 0.3s var(--ease);
   }
@@ -162,7 +219,7 @@
     font-size: 1rem;
     font-weight: 500;
     color: var(--text);
-    margin-bottom: 10px;
+    margin-bottom: 12px;
     transition: color 0.25s var(--ease);
   }
 
@@ -172,53 +229,49 @@
     font-size: 1rem;
     font-weight: 500;
     color: var(--text);
-    line-height: 1.45;
+    line-height: 1.5;
     max-width: 260px;
   }
 
-  /* Giant wordmark */
+  /* Giant wordmark — template style */
   .footer-wordmark-block {
     position: relative;
-    margin-top: 0;
-    padding-bottom: 0;
+    width: 100%;
+    padding-bottom: 28px;
   }
 
   .footer-firstname {
     font-family: var(--font-display);
     font-weight: 700;
-    font-size: clamp(1.35rem, 3.2vw, 2.35rem);
+    font-size: clamp(1.75rem, 5.4vw, 3rem);
     letter-spacing: -0.02em;
     color: var(--text);
     line-height: 1.15;
     margin: 0 0 10px;
-    padding-right: 0.35em;
-    width: max-content;
-    max-width: 100%;
-    overflow: visible;
     opacity: 0;
     transform: translateY(16px);
   }
 
   .footer-wordmark-wrap {
     position: relative;
+    width: 100%;
     overflow: hidden;
-    line-height: 0.78;
+    line-height: 0.82;
   }
 
   .footer-wordmark {
     font-family: var(--font-display);
     font-weight: 800;
-    font-size: clamp(4.2rem, 16.5vw, 13.5rem);
-    letter-spacing: -0.045em;
+    font-size: clamp(3rem, 15.5vw, 12.5rem);
+    letter-spacing: -0.04em;
     color: var(--accent);
     white-space: nowrap;
-    display: flex;
+    display: inline-flex;
     align-items: flex-end;
-    width: max-content;
-    max-width: 100%;
     margin: 0;
-    padding-bottom: 0.04em;
-    position: relative;
+    padding-bottom: 0.02em;
+    width: 100%;
+    justify-content: flex-start;
   }
 
   .wm-letter {
@@ -233,7 +286,7 @@
   .footer-copy {
     position: absolute;
     font-family: var(--font-body);
-    font-size: clamp(0.72rem, 1.05vw, 0.92rem);
+    font-size: clamp(0.72rem, 1vw, 0.88rem);
     font-weight: 500;
     color: var(--text);
     white-space: nowrap;
@@ -245,50 +298,46 @@
 
   .wordmark-dot {
     display: inline-block;
-    width: 0.11em;
-    height: 0.11em;
+    width: 0.1em;
+    height: 0.1em;
     background: var(--accent);
     border-radius: 50%;
-    margin-left: 0.02em;
+    margin-left: 0.04em;
     align-self: flex-start;
-    margin-top: 0.18em;
+    margin-top: 0.2em;
     transform: scale(0);
     transform-origin: center;
     flex-shrink: 0;
   }
 
-  .scroll-top-btn {
+  .footer-wordmark-shape {
     position: absolute;
-    right: 0;
-    bottom: 10px;
-    width: 48px;
-    height: 48px;
-    border-radius: 50%;
-    background: #ffffff;
-    color: #111111;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    transform: scale(0);
     z-index: 5;
-    transition: transform 0.3s var(--ease);
+    pointer-events: none;
+    opacity: 0;
+    width: clamp(24px, 3.2vw, 46px);
+    transform-origin: center center;
+    animation: footerShapeSpin 10s linear infinite;
   }
 
-  .scroll-top-btn:hover { transform: scale(1.06); }
+  .footer-wordmark-shape img {
+    display: block;
+    width: 100%;
+    height: auto;
+    filter: brightness(0) invert(1);
+  }
 
-  .scroll-top-btn svg {
-    width: 18px;
-    height: 18px;
-    stroke: currentColor;
-    stroke-width: 2;
-    fill: none;
+  @keyframes footerShapeSpin {
+    from { transform: rotate(0deg); }
+    to { transform: rotate(360deg); }
   }
 
   @media (max-width: 980px) {
-    .footer { padding: 56px 28px 0; }
+    .footer { padding: 64px 28px 0; }
     .footer-main {
       grid-template-columns: 1fr 1fr;
       gap: 40px 32px;
+      padding-bottom: 56px;
     }
     .footer-brand { grid-column: 1 / -1; }
     .footer-tagline { max-width: 420px; }
@@ -302,19 +351,54 @@
       padding-bottom: 48px;
     }
     .footer-tagline { font-size: clamp(1.75rem, 8vw, 2.25rem); }
-    .footer-copy {
-      font-size: 0.65rem;
-    }
-    .scroll-top-btn {
-      right: 0;
-      bottom: 8px;
-      width: 42px;
-      height: 42px;
-    }
+    .footer-wordmark { font-size: clamp(2.4rem, 14vw, 4.5rem); }
+    .footer-copy { font-size: 0.65rem; }
   }
 </style>
 </head>
 <body>
+
+<header class="navbar" id="navbar">
+  <div class="nav-inner">
+    <a href="#" class="nav-name">Mohamed <span>Bouzayan</span></a>
+    <button class="nav-toggle" id="navToggle" aria-label="Ouvrir le menu" aria-expanded="false">
+      <span class="nav-toggle-label">Menu</span>
+      <span class="nav-toggle-icon" aria-hidden="true"><span></span><span></span></span>
+    </button>
+  </div>
+</header>
+
+<div class="menu-overlay" id="menuOverlay" aria-hidden="true">
+  <div class="menu-panel menu-panel-left" id="panelLeft">
+    <div class="menu-panel-inner">
+      <nav class="menu-nav" aria-label="Navigation principale">
+        <a href="#" class="menu-link"><span class="menu-link-index">01</span><span class="menu-link-label">Accueil</span><span class="menu-link-plus">+</span></a>
+        <a href="#" class="menu-link"><span class="menu-link-index">02</span><span class="menu-link-label">À propos</span><span class="menu-link-plus">+</span></a>
+        <a href="projets.html" class="menu-link"><span class="menu-link-index">03</span><span class="menu-link-label">Projets</span><span class="menu-link-plus">+</span></a>
+        <a href="#" class="menu-link"><span class="menu-link-index">04</span><span class="menu-link-label">Compétences</span><span class="menu-link-plus">+</span></a>
+        <a href="services.html" class="menu-link"><span class="menu-link-index">05</span><span class="menu-link-label">Services</span><span class="menu-link-plus">+</span></a>
+        <a href="contact.html" class="menu-link"><span class="menu-link-index">06</span><span class="menu-link-label">Contact</span><span class="menu-link-plus">+</span></a>
+      </nav>
+    </div>
+  </div>
+  <div class="menu-panel menu-panel-right" id="panelRight">
+    <div class="menu-panel-inner">
+      <div class="menu-contact">
+        <h2 class="menu-contact-title">Get In Touch</h2>
+        <div class="menu-contact-block"><span class="menu-contact-label">Phone</span><a href="tel:+212690815605" class="menu-contact-value">+212 690 815 605</a></div>
+        <div class="menu-contact-block"><span class="menu-contact-label">Email</span><a href="mailto:mohammedbouzi177@gmail.com" class="menu-contact-value">mohammedbouzi177@gmail.com</a></div>
+        <div class="menu-contact-block"><span class="menu-contact-label">Address</span><p class="menu-contact-value">Beni Mellal, Maroc</p></div>
+        <div class="menu-contact-block"><span class="menu-contact-label">Follow us</span>
+          <div class="menu-socials">
+            <a href="https://github.com/" class="menu-social" aria-label="GitHub" target="_blank" rel="noopener"><svg viewBox="0 0 24 24"><path d="M12 2C6.5 2 2 6.5 2 12c0 4.4 2.9 8.2 6.8 9.5.5.1.7-.2.7-.5v-1.7c-2.8.6-3.4-1.3-3.4-1.3-.4-1.1-1.1-1.4-1.1-1.4-.9-.6.1-.6.1-.6 1 .1 1.5 1 1.5 1 .9 1.5 2.3 1.1 2.9.8.1-.6.3-1.1.6-1.3-2.2-.3-4.6-1.1-4.6-5 0-1.1.4-2 1-2.7-.1-.3-.4-1.3.1-2.7 0 0 .8-.3 2.8 1 .8-.2 1.6-.3 2.4-.3s1.6.1 2.4.3c2-.1 2.8-1 2.8-1 .5 1.4.2 2.4.1 2.7.6.7 1 1.6 1 2.7 0 3.9-2.3 4.7-4.6 5 .4.3.7.9.7 1.8v2.7c0 .3.2.6.7.5C19.1 20.2 22 16.4 22 12c0-5.5-4.5-10-10-10z"/></svg></a>
+            <a href="https://x.com/" class="menu-social" aria-label="X / Twitter" target="_blank" rel="noopener"><svg viewBox="0 0 24 24"><path d="M18.2 4H21l-6.6 7.5L22 20h-5.8l-4.5-5.4L6.4 20H3.6l7-8L2 4h6l4.1 5L18.2 4zm-1 14.6h1.6L7 5.3H5.3l11.9 13.3z"/></svg></a>
+            <a href="https://linkedin.com/" class="menu-social" aria-label="LinkedIn" target="_blank" rel="noopener"><svg viewBox="0 0 24 24"><path d="M6.5 9H3v12h3.5V9zM4.8 3C3.5 3 2.5 4 2.5 5.3c0 1.2 1 2.2 2.3 2.2h.1c1.3 0 2.3-1 2.3-2.2C7.1 4 6.1 3 4.8 3zM21 14.5c0-2.8-1.5-4.6-3.6-4.6-1.7 0-2.4.9-2.8 1.6V9H11v12h3.5v-6.5c0-.9.6-1.8 1.6-1.8 1 0 1.5.7 1.5 1.8V21H21v-6.5z"/></svg></a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
 
 <p class="demo-filler">// Composant footer autonome — scrollez pour déclencher les animations.</p>
 
@@ -344,15 +428,15 @@
     </div>
 
     <div class="footer-col">
-      <span class="footer-label"><span class="label-dot"></span>Navigation</span>
+      <span class="footer-label"><span class="label-dot"></span>Quick links</span>
       <div class="pill-group">
-        <a href="#accueil" class="pill-link">Accueil</a>
-        <a href="#apropos" class="pill-link">À propos</a>
-        <a href="#services" class="pill-link">Services</a>
-        <a href="#projets" class="pill-link">Projets</a>
-        <a href="#competences" class="pill-link">Compétences</a>
-        <a href="#blog" class="pill-link">Blog</a>
-        <a href="#contact" class="pill-link">Contact</a>
+        <a href="#" class="pill-link">Accueil</a>
+        <a href="#" class="pill-link">À propos</a>
+        <a href="services.html" class="pill-link">Services</a>
+        <a href="#" class="pill-link">Projets</a>
+        <a href="#" class="pill-link">Compétences</a>
+        <a href="#" class="pill-link">Blog</a>
+        <a href="contact.html" class="pill-link">Contact</a>
       </div>
     </div>
 
@@ -365,14 +449,14 @@
   </div>
 
   <div class="footer-wordmark-block">
-    <p class="footer-firstname">Mohamed</p>
+    <p class="footer-firstname">Mouhamed</p>
     <div class="footer-wordmark-wrap">
       <h3 class="footer-wordmark" id="wordmark" aria-label="Bouzayan.">Bouzayan.<span class="wordmark-dot"></span></h3>
     </div>
     <span class="footer-copy" id="footerCopy">©2026 Mohamed Bouzayan.</span>
-    <button class="scroll-top-btn" id="scrollTopBtn" aria-label="Retour en haut">
-      <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 19V5M5 12l7-7 7 7"/></svg>
-    </button>
+    <span class="footer-wordmark-shape" aria-hidden="true">
+      <img src="images/footer/footer-shape-1.png" alt="">
+    </span>
   </div>
 </footer>
 
@@ -384,30 +468,64 @@
   const wordmark = document.getElementById('wordmark');
   const footerCopy = document.getElementById('footerCopy');
   const wordmarkBlock = document.querySelector('.footer-wordmark-block');
+  const wordmarkWrap = document.querySelector('.footer-wordmark-wrap');
+  const wordmarkShape = document.querySelector('.footer-wordmark-shape');
   const rawText = wordmark.childNodes[0].textContent;
   wordmark.childNodes[0].textContent = '';
-  [...rawText].forEach((ch) => {
+  const letters = [...rawText];
+  letters.forEach((ch, i) => {
     const span = document.createElement('span');
     span.className = 'wm-letter';
     span.textContent = ch;
     if (ch === 'y') span.classList.add('wm-letter-y');
+    if (ch === 'n' && letters[i + 1] === '.') span.classList.add('wm-letter-last');
     wordmark.insertBefore(span, wordmark.querySelector('.wordmark-dot'));
   });
 
+  function fitWordmark() {
+    const wm = document.getElementById('wordmark');
+    if (!wordmarkWrap || !wm) return;
+
+    wm.style.fontSize = '';
+    let size = parseFloat(getComputedStyle(wm).fontSize);
+    const maxWidth = wordmarkWrap.clientWidth;
+
+    while (wm.scrollWidth > maxWidth && size > 36) {
+      size -= 1;
+      wm.style.fontSize = `${size}px`;
+    }
+  }
+
   function placeCopyBesideY() {
     const yLetter = wordmark.querySelector('.wm-letter-y');
-    if (!yLetter || !footerCopy) return;
+    if (!yLetter || !footerCopy || !wordmarkBlock) return;
     const blockRect = wordmarkBlock.getBoundingClientRect();
     const yRect = yLetter.getBoundingClientRect();
-    /* juste AVANT le "y" (à gauche), en bas de la ligne */
-    const left = yRect.left - blockRect.left - footerCopy.offsetWidth - 10;
-    const top = yRect.bottom - blockRect.top - footerCopy.offsetHeight - 2;
+    const left = yRect.left - blockRect.left - footerCopy.offsetWidth + 32;
+    const top = yRect.bottom - blockRect.top - footerCopy.offsetHeight + 2;
     footerCopy.style.left = `${Math.max(0, left)}px`;
     footerCopy.style.top = `${top}px`;
   }
 
-  placeCopyBesideY();
-  window.addEventListener('resize', placeCopyBesideY);
+  function placeWordmarkShape() {
+    const lastLetter = wordmark.querySelector('.wm-letter-last');
+    if (!lastLetter || !wordmarkShape || !wordmarkBlock) return;
+    const blockRect = wordmarkBlock.getBoundingClientRect();
+    const letterRect = lastLetter.getBoundingClientRect();
+    const left = letterRect.left - blockRect.left + letterRect.width / 2 - wordmarkShape.offsetWidth / 2;
+    const top = letterRect.top - blockRect.top - wordmarkShape.offsetHeight * 0.72;
+    wordmarkShape.style.left = `${left}px`;
+    wordmarkShape.style.top = `${top}px`;
+  }
+
+  function syncWordmarkLayout() {
+    fitWordmark();
+    placeCopyBesideY();
+    placeWordmarkShape();
+  }
+
+  syncWordmarkLayout();
+  window.addEventListener('resize', syncWordmarkLayout);
 
   const footerTl = gsap.timeline({
     scrollTrigger: { trigger: '.footer', start: 'top 75%' },
@@ -420,18 +538,61 @@
     .to('.footer-firstname', { opacity: 1, y: 0, duration: 0.55 }, '-=0.35')
     .to('.wm-letter', { y: 0, stagger: 0.02, duration: 0.7, ease: 'power4.out' }, '-=0.3')
     .to('.wordmark-dot', { scale: 1, duration: 0.45, ease: 'back.out(3)' }, '-=0.25')
-    .to('.scroll-top-btn', { scale: 1, duration: 0.4, ease: 'back.out(2)' }, '-=0.35')
-    .to('.footer-copy', { opacity: 1, duration: 0.4 }, '-=0.2');
+    .to('.footer-wordmark-shape', { opacity: 1, duration: 0.45 }, '-=0.2')
+    .to('.footer-copy', { opacity: 1, duration: 0.4 }, '-=0.15');
 
-  footerTl.eventCallback('onComplete', placeCopyBesideY);
-  /* recalcule aussi pendant l'anim des lettres */
-  gsap.ticker.add(placeCopyBesideY);
-  setTimeout(() => gsap.ticker.remove(placeCopyBesideY), 2500);
-
-  document.getElementById('scrollTopBtn').addEventListener('click', () => {
-    window.scrollTo({ top: 0, behavior: 'smooth' });
-  });
+  footerTl.eventCallback('onComplete', syncWordmarkLayout);
+  gsap.ticker.add(syncWordmarkLayout);
+  setTimeout(() => gsap.ticker.remove(syncWordmarkLayout), 2500);
 </script>
+<script>
+  // Navbar scroll
+  const navbar = document.getElementById('navbar');
+
+  // Menu
+  const navToggle = document.getElementById('navToggle');
+  const overlay = document.getElementById('menuOverlay');
+  const panelLeft = document.getElementById('panelLeft');
+  const panelRight = document.getElementById('panelRight');
+  let menuOpen = false;
+
+  gsap.set(panelLeft, { y: '-101%' });
+  gsap.set(panelRight, { y: '101%' });
+
+  const openTl = gsap.timeline({ paused: true, defaults: { ease: 'power4.inOut' },
+    onReverseComplete() { overlay.classList.remove('is-open'); overlay.setAttribute('aria-hidden','true'); document.body.style.overflow = ''; }
+  });
+  openTl
+    .set(overlay, { visibility: 'visible' })
+    .to(panelLeft, { y: '0%', duration: 0.85 }, 0)
+    .to(panelRight, { y: '0%', duration: 0.85 }, 0)
+    .to('.menu-link', { opacity: 1, y: 0, stagger: 0.07, duration: 0.55, ease: 'power3.out' }, 0.45)
+    .to('.menu-contact-title', { opacity: 1, y: 0, duration: 0.5, ease: 'power3.out' }, 0.5)
+    .to('.menu-contact-block', { opacity: 1, y: 0, stagger: 0.08, duration: 0.45, ease: 'power3.out' }, 0.58);
+
+  function openMenu() { if (menuOpen) return; menuOpen = true; overlay.classList.add('is-open'); overlay.setAttribute('aria-hidden','false'); navToggle.classList.add('is-open'); navToggle.setAttribute('aria-expanded','true'); document.body.style.overflow = 'hidden'; openTl.play(0); }
+  function closeMenu() { if (!menuOpen) return; menuOpen = false; navToggle.classList.remove('is-open'); navToggle.setAttribute('aria-expanded','false'); openTl.reverse(); }
+  navToggle.addEventListener('click', () => menuOpen ? closeMenu() : openMenu());
+  document.querySelectorAll('.menu-link').forEach((link) => {
+    link.addEventListener('click', (e) => {
+      const href = link.getAttribute('href');
+      if (!href || href === '#') {
+        e.preventDefault();
+        closeMenu();
+        return;
+      }
+      if (!href.startsWith('#')) {
+        e.preventDefault();
+        closeMenu();
+        window.location.assign(href);
+        return;
+      }
+      closeMenu();
+    });
+  });
+  document.addEventListener('keydown', e => { if (e.key === 'Escape' && menuOpen) closeMenu(); });
+</script>
+<script src="navbar-scroll.js"></script>
 <script src="cursor.js"></script>
 </body>
 </html>
