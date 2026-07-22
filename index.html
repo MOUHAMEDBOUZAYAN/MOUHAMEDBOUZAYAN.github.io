@@ -6,7 +6,7 @@
 <title>Mohamed Bouzayan — Web Developer</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Inter+Tight:wght@500;600;700&family=Syne:wght@600;700;800&family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Black+Ops+One&family=Inter+Tight:wght@500;600;700&family=Syne:wght@600;700;800&family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="cursor.css">
 <style>
   :root {
@@ -758,18 +758,18 @@
     background: #ffffff;
     color: #0a0a0a;
     overflow: hidden;
-    padding: clamp(56px, 7vw, 96px) clamp(24px, 4vw, 48px) clamp(72px, 8vw, 112px);
+    padding: clamp(48px, 6vw, 72px) clamp(24px, 4vw, 48px) clamp(72px, 8vw, 112px);
   }
 
   .home-skills-decor {
     position: absolute;
-    right: clamp(-4%, -1vw, 2%);
-    top: 50%;
-    width: clamp(160px, 20vw, 300px);
-    z-index: 1;
+    left: clamp(-2%, 0vw, 12px);
+    top: clamp(-8px, -0.5vw, 4px);
+    bottom: auto;
+    width: clamp(96px, 11vw, 140px);
+    z-index: 5;
     pointer-events: none;
     user-select: none;
-    transform: translateY(-50%);
   }
 
   .home-skills-decor-inner {
@@ -780,37 +780,96 @@
     display: block;
     width: 100%;
     height: auto;
-    mix-blend-mode: screen;
   }
 
   .home-skills-inner {
     position: relative;
     z-index: 2;
-    max-width: 1180px;
-    margin: 0 auto;
-    display: grid;
-    grid-template-columns: minmax(0, 1fr) clamp(180px, 24vw, 320px);
-    gap: clamp(24px, 4vw, 48px);
+    width: 100%;
+    max-width: none;
+    margin: 0;
+  }
+
+  .home-skills-title {
+    display: inline-flex;
     align-items: center;
-    padding-right: clamp(120px, 16vw, 220px);
+    gap: 10px;
+    margin-bottom: clamp(28px, 4vw, 44px);
+    margin-left: clamp(88px, 12vw, 150px);
+    white-space: nowrap;
+  }
+
+  .home-skills-title-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: var(--accent);
+    flex-shrink: 0;
+  }
+
+  .home-skills-title-text {
+    font-size: 0.78rem;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: #0a0a0a;
+  }
+
+  .home-skills-title-line {
+    display: flex;
+    align-items: center;
+    width: clamp(48px, 8vw, 88px);
+    height: 1px;
+    background: #0a0a0a;
+    position: relative;
+    flex-shrink: 0;
+  }
+
+  .home-skills-title-line::after {
+    content: '';
+    position: absolute;
+    right: -1px;
+    width: 6px;
+    height: 6px;
+    border-right: 1.5px solid #0a0a0a;
+    border-bottom: 1.5px solid #0a0a0a;
+    transform: rotate(-45deg);
   }
 
   .home-skills-list {
+    width: calc(100% + 2 * clamp(24px, 4vw, 48px));
+    max-width: none;
+    margin-left: calc(-1 * clamp(24px, 4vw, 48px));
     border-top: 1px solid rgba(10, 10, 10, 0.12);
     border-bottom: 1px solid rgba(10, 10, 10, 0.12);
   }
 
   .home-skills-row {
+    position: relative;
     display: flex;
     align-items: center;
     width: 100%;
-    padding: clamp(14px, 2.2vw, 22px) 0;
+    padding: clamp(18px, 2.4vw, 28px) clamp(24px, 4vw, 48px);
+    padding-left: clamp(48px, 8vw, 96px);
     border: 0;
     border-bottom: 1px solid rgba(10, 10, 10, 0.12);
     background: transparent;
     text-align: left;
     cursor: pointer;
-    transition: color 0.35s var(--ease);
+    overflow: hidden;
+    isolation: isolate;
+    z-index: 0;
+  }
+
+  .home-skills-row::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: var(--accent);
+    transform: scaleY(0);
+    transform-origin: center center;
+    transition: transform 0.45s cubic-bezier(0.65, 0, 0.35, 1);
+    z-index: -1;
   }
 
   .home-skills-row:last-child {
@@ -818,86 +877,110 @@
   }
 
   .home-skills-label {
-    font-family: var(--font-display);
-    font-weight: 800;
-    font-size: clamp(2.2rem, 5.8vw, 5rem);
-    line-height: 0.95;
-    letter-spacing: -0.04em;
+    position: relative;
+    z-index: 1;
+    font-family: 'Black Ops One', sans-serif;
+    font-weight: 400;
+    font-size: clamp(2.6rem, 6vw, 5.2rem);
+    line-height: 1;
+    letter-spacing: 0.01em;
     text-transform: uppercase;
     color: #0a0a0a;
+    white-space: nowrap;
     transition: color 0.35s var(--ease), transform 0.45s var(--ease);
+  }
+
+  .home-skills-row:hover::before,
+  .home-skills-row.is-active::before {
+    transform: scaleY(1);
   }
 
   .home-skills-row:hover .home-skills-label,
   .home-skills-row.is-active .home-skills-label {
-    color: var(--accent);
-    transform: translateX(clamp(6px, 1.2vw, 14px));
+    color: #ffffff;
+    transform: translateX(8px);
   }
 
-  .home-skills-preview {
-    position: relative;
-    width: 100%;
+  .home-skills-cursor {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: clamp(160px, 18vw, 240px);
     aspect-ratio: 4 / 5;
-    max-height: clamp(220px, 34vw, 420px);
-    justify-self: end;
-  }
-
-  .home-skills-preview-stack {
-    position: absolute;
-    inset: 0;
-    border-radius: clamp(12px, 1.5vw, 18px);
+    z-index: 50;
+    pointer-events: none;
+    opacity: 0;
+    visibility: hidden;
+    transform: translate(-50%, -50%) scale(0.88);
+    transition: opacity 0.25s var(--ease), visibility 0.25s var(--ease), transform 0.25s var(--ease);
     overflow: hidden;
-    background: #f3f3f3;
+    border-radius: 12px;
+    box-shadow: 0 18px 40px rgba(0, 0, 0, 0.18);
   }
 
-  .home-skills-preview-stack img {
+  .home-skills-cursor.is-visible {
+    opacity: 1;
+    visibility: visible;
+    transform: translate(-50%, -50%) scale(1);
+  }
+
+  .home-skills-cursor img {
     position: absolute;
     inset: 0;
     width: 100%;
     height: 100%;
     object-fit: cover;
     opacity: 0;
-    transform: scale(1.04);
-    transition: opacity 0.45s var(--ease), transform 0.55s var(--ease);
+    transition: opacity 0.3s var(--ease);
   }
 
-  .home-skills-preview-stack img.is-active {
+  .home-skills-cursor img.is-active {
     opacity: 1;
-    transform: scale(1);
   }
 
   @media (max-width: 900px) {
     .home-skills {
-      padding: 48px 24px 72px;
+      padding: 40px 24px 72px;
     }
 
     .home-skills-inner {
-      grid-template-columns: 1fr;
-      padding-right: clamp(88px, 22vw, 120px);
+      padding-top: 0;
     }
 
-    .home-skills-preview {
+    .home-skills-list {
+      width: calc(100% + 48px);
+      margin-left: -24px;
+    }
+
+    .home-skills-row {
+      padding: clamp(14px, 3.5vw, 20px) 24px;
+      padding-left: clamp(32px, 8vw, 48px);
+    }
+
+    .home-skills-cursor {
       display: none;
     }
 
     .home-skills-decor {
-      right: -10%;
-      top: auto;
-      bottom: 8%;
-      width: clamp(120px, 30vw, 180px);
-      transform: none;
-      opacity: 0.9;
+      left: -4%;
+      right: auto;
+      top: -4px;
     }
 
     .home-skills-label {
-      font-size: clamp(1.8rem, 9vw, 2.8rem);
+      font-size: clamp(2.1rem, 9vw, 3.2rem);
     }
   }
 
   @media (max-width: 640px) {
     .home-skills-decor {
-      width: clamp(100px, 34vw, 140px);
-      bottom: 4%;
+      width: clamp(72px, 24vw, 96px);
+      top: -2px;
+      bottom: auto;
+    }
+
+    .home-skills-label {
+      font-size: clamp(1.7rem, 8vw, 2.4rem);
     }
   }
 </style>
@@ -1064,42 +1147,46 @@
   <div class="home-skills-decor" aria-hidden="true">
     <div class="home-skills-decor-inner">
       <img
-        src="images/Home-Page/image1.png"
+        src="images/Contact-Page/about-shape-2.png"
         alt=""
-        width="300"
-        height="420"
+        width="140"
+        height="140"
         decoding="async"
       >
     </div>
   </div>
 
+  <div class="home-skills-cursor" id="homeSkillsCursor" aria-hidden="true">
+    <img src="images/Header-services/1.webp" alt="" data-index="0" decoding="async">
+    <img src="images/Header-services/5.webp" alt="" data-index="1" decoding="async">
+    <img src="images/Header-services/9.webp" alt="" data-index="2" decoding="async">
+    <img src="images/Header-services/12.webp" alt="" data-index="3" decoding="async">
+    <img src="images/Header-services/15.webp" alt="" data-index="4" decoding="async">
+  </div>
+
   <div class="home-skills-inner">
-    <div class="home-skills-list" id="homeSkillsList">
-      <button type="button" class="home-skills-row is-active" data-preview="images/Header-services/1.webp" aria-pressed="true">
-        <span class="home-skills-label">web</span>
-      </button>
-      <button type="button" class="home-skills-row" data-preview="images/Header-services/5.webp" aria-pressed="false">
-        <span class="home-skills-label">full</span>
-      </button>
-      <button type="button" class="home-skills-row" data-preview="images/Header-services/9.webp" aria-pressed="false">
-        <span class="home-skills-label">Stack</span>
-      </button>
-      <button type="button" class="home-skills-row" data-preview="images/Header-services/12.webp" aria-pressed="false">
-        <span class="home-skills-label">develleper</span>
-      </button>
-      <button type="button" class="home-skills-row" data-preview="images/Header-services/15.webp" aria-pressed="false">
-        <span class="home-skills-label">Product Renders</span>
-      </button>
+    <div class="home-skills-title">
+      <span class="home-skills-title-dot" aria-hidden="true"></span>
+      <span class="home-skills-title-text">What I Do</span>
+      <span class="home-skills-title-line" aria-hidden="true"></span>
     </div>
 
-    <div class="home-skills-preview" aria-hidden="true">
-      <div class="home-skills-preview-stack" id="homeSkillsPreview">
-        <img src="images/Header-services/1.webp" alt="" class="is-active" decoding="async">
-        <img src="images/Header-services/5.webp" alt="" decoding="async">
-        <img src="images/Header-services/9.webp" alt="" decoding="async">
-        <img src="images/Header-services/12.webp" alt="" decoding="async">
-        <img src="images/Header-services/15.webp" alt="" decoding="async">
-      </div>
+    <div class="home-skills-list" id="homeSkillsList">
+      <button type="button" class="home-skills-row" data-index="0">
+        <span class="home-skills-label">Web Design</span>
+      </button>
+      <button type="button" class="home-skills-row" data-index="1">
+        <span class="home-skills-label">Development</span>
+      </button>
+      <button type="button" class="home-skills-row" data-index="2">
+        <span class="home-skills-label">UI / UX</span>
+      </button>
+      <button type="button" class="home-skills-row" data-index="3">
+        <span class="home-skills-label">Animation</span>
+      </button>
+      <button type="button" class="home-skills-row" data-index="4">
+        <span class="home-skills-label">Branding</span>
+      </button>
     </div>
   </div>
 </section>
@@ -1224,9 +1311,9 @@
       },
       defaults: { ease: 'power3.out' },
     })
-      .from('.home-skills-row', { opacity: 0, y: 22, duration: 0.55, stagger: 0.08 })
-      .from('.home-skills-preview', { opacity: 0, x: 24, duration: 0.7 }, 0.12)
-      .from('.home-skills-decor-inner', { opacity: 0, x: 30, duration: 0.85 }, 0.18);
+      .from('.home-skills-title', { opacity: 0, y: 16, duration: 0.5 })
+      .from('.home-skills-row', { opacity: 0, y: 22, duration: 0.55, stagger: 0.08 }, 0.08)
+      .from('.home-skills-decor-inner', { opacity: 0, y: -20, duration: 0.85 }, 0.18);
 
     gsap.to('.home-skills-decor-inner', {
       y: '+=14',
@@ -1240,20 +1327,68 @@
   }
 
   (function initSkillsHover() {
+    const list = document.getElementById('homeSkillsList');
+    const cursor = document.getElementById('homeSkillsCursor');
     const rows = document.querySelectorAll('.home-skills-row');
-    const previews = document.querySelectorAll('#homeSkillsPreview img');
-    if (!rows.length || !previews.length) return;
+    const images = cursor?.querySelectorAll('img');
+    if (!list || !cursor || !rows.length || !images?.length) return;
 
-    rows.forEach((row, index) => {
+    let activeIndex = -1;
+    let visible = false;
+    let mouseX = 0;
+    let mouseY = 0;
+    let currentX = 0;
+    let currentY = 0;
+    let rafId = 0;
+
+    function setActiveImage(index) {
+      if (index === activeIndex) return;
+      activeIndex = index;
+      images.forEach((img, i) => img.classList.toggle('is-active', i === index));
+    }
+
+    function showCursor(index) {
+      setActiveImage(index);
+      visible = true;
+      cursor.classList.add('is-visible');
+      if (!rafId) rafId = requestAnimationFrame(tick);
+    }
+
+    function hideCursor() {
+      visible = false;
+      activeIndex = -1;
+      cursor.classList.remove('is-visible');
+      rows.forEach((row) => row.classList.remove('is-active'));
+    }
+
+    function tick() {
+      currentX += (mouseX - currentX) * 0.18;
+      currentY += (mouseY - currentY) * 0.18;
+      cursor.style.left = `${currentX}px`;
+      cursor.style.top = `${currentY}px`;
+
+      if (visible || Math.abs(mouseX - currentX) > 0.4 || Math.abs(mouseY - currentY) > 0.4) {
+        rafId = requestAnimationFrame(tick);
+      } else {
+        rafId = 0;
+      }
+    }
+
+    list.addEventListener('mousemove', (e) => {
+      mouseX = e.clientX;
+      mouseY = e.clientY;
+      if (!rafId) rafId = requestAnimationFrame(tick);
+    });
+
+    rows.forEach((row) => {
       row.addEventListener('mouseenter', () => {
-        rows.forEach((item, i) => {
-          const active = i === index;
-          item.classList.toggle('is-active', active);
-          item.setAttribute('aria-pressed', active ? 'true' : 'false');
-        });
-        previews.forEach((img, i) => img.classList.toggle('is-active', i === index));
+        const index = Number(row.dataset.index) || 0;
+        rows.forEach((item) => item.classList.toggle('is-active', item === row));
+        showCursor(index);
       });
     });
+
+    list.addEventListener('mouseleave', hideCursor);
   })();
 
   const aboutSection = document.getElementById('about');
